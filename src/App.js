@@ -68,7 +68,7 @@ function BackgroundManager() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const getBackgroundForRoute = (path, mobile) => {
-    if (path === '/rsvp') return '';
+    if (path === '/rsvp') return mobile ? coupleMobile : coupleDesktop;
     if (path === '/gifts') return giftsMobile;
     return mobile ? coupleMobile : coupleDesktop;
   };
