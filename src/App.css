@@ -1872,10 +1872,10 @@ p {
     justify-content: center;
 
     h1 {
-      font-size: clamp(4rem, 6.5vw, 7rem);
+      font-size: clamp(3rem, 4.3vw, 4.8rem);
       color: var(--green-deep);
       margin: 0 0 0.2rem;
-      line-height: 1;
+      line-height: 1.04;
     }
 
     .rsvp-subtitle {
@@ -2009,7 +2009,7 @@ p {
       padding: 48px 44px;
 
       h1 {
-        font-size: clamp(3.5rem, 8vw, 6rem);
+        font-size: clamp(3rem, 7vw, 4.4rem);
       }
     }
   }
@@ -2044,7 +2044,7 @@ p {
       padding: 36px 28px;
 
       h1 {
-        font-size: clamp(3rem, 10vw, 4.5rem);
+        font-size: clamp(2.5rem, 9vw, 3.4rem);
       }
 
       button {
