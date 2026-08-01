@@ -518,6 +518,7 @@ p {
 }
 
 .background-container--gifts {
+  background-size: cover;
   background-position: center;
 }
 
@@ -1353,6 +1354,7 @@ p {
   }
 
   .background-container--gifts {
+    background-size: cover;
     background-position: center top;
   }
 
@@ -1520,12 +1522,19 @@ p {
 
 .gifts {
   min-height: 100svh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   position: relative;
   overflow: visible;
+  background-image:
+    linear-gradient(180deg, rgba(42, 22, 28, 0.22), rgba(42, 22, 28, 0.22)),
+    url('./media/giftsDesktop.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   padding: clamp(118px, 12vw, 158px) clamp(18px, 4vw, 48px) clamp(170px, 16vw, 230px);
 
   .gifts-loading-veil {
@@ -1684,6 +1693,11 @@ p {
 
 @media screen and (max-width: 768px) {
   .gifts {
+    background-image:
+      linear-gradient(180deg, rgba(42, 22, 28, 0.18), rgba(42, 22, 28, 0.22)),
+      url('./media/giftsMobile.webp');
+    background-position: center top;
+    background-size: cover;
     padding: 104px 18px 156px;
 
     p {
