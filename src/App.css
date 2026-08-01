@@ -502,19 +502,19 @@ p {
   background-position: center 58%;
 }
 
-.background-container--home::before {
-  content: "";
-  position: absolute;
+.home-bottom-floral-border {
+  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
-  height: clamp(96px, 11vw, 148px);
+  z-index: 98;
+  height: clamp(108px, 12vw, 160px);
   background-image: url('./media/content/design-assets/flower-bottom-lg.png');
   background-repeat: repeat-x;
   background-position: bottom center;
   background-size: auto 100%;
   pointer-events: none;
+  transform: translateZ(0);
 }
 
 .background-container--gifts {
@@ -1352,13 +1352,13 @@ p {
     background-position: center 72%;
   }
 
-  .background-container--home::before {
-    height: 88px;
-    background-image: url('./media/content/design-assets/flower-bottom-md.png');
-  }
-
   .background-container--gifts {
     background-position: center top;
+  }
+
+  .home-bottom-floral-border {
+    height: 116px;
+    background-image: url('./media/content/design-assets/flower-bottom-lg.png');
   }
 
   .background-container--home::after {

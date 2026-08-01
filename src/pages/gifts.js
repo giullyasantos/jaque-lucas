@@ -19,6 +19,8 @@ const waitForPaint = () => new Promise((resolve) => {
   requestAnimationFrame(() => requestAnimationFrame(resolve));
 });
 
+const giftRegistryUrl = 'https://www.finalfeliz.de/jaqueline-lucaslopes';
+
 const useGiftBackgroundReady = () => {
   const [backgroundReady, setBackgroundReady] = useState(false);
   const [backgroundSrc, setBackgroundSrc] = useState(getGiftBackground);
@@ -78,7 +80,7 @@ const Gifts = () => {
           Sua presença é o nosso maior presente. Se desejar nos abençoar de outra forma, preparamos uma contribuição para o início da nossa vida juntos.
         </p>
         <div className="registry">
-          <a className="button" href="https://www.zola.com/registry/damarisandsidiclei" target="_blank" rel="noopener noreferrer">
+          <a className="button" href={giftRegistryUrl} target="_blank" rel="noopener noreferrer">
             <span>Contribua</span>
           </a>
         </div>

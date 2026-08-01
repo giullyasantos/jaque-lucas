@@ -164,6 +164,7 @@ function BackgroundManager() {
 // -- Main Component --
 function Main({ introReady = true }) {
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   return (
     <>
@@ -182,6 +183,7 @@ function Main({ introReady = true }) {
         </TransitionGroup>
         <Footer />
       </div>
+      {isHomePage && <div className="home-bottom-floral-border" aria-hidden="true" />}
     </>
   );
 }
