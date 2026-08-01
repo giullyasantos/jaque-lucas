@@ -343,38 +343,6 @@ p {
    NAVBAR
    ============================================ */
 
-@media screen and (max-width: 768px) {
-  .topbar {
-    padding-top: 20px;
-  }
-
-  #close {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #close {
-    margin-top: 0;
-    height: 2.5em;
-  }
-
-  .menu.open {
-    flex-direction: column;
-    height: 60vh;
-    padding-top: 5vh;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .menu {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
 .navbar {
   position: fixed;
   top: 0;
@@ -509,6 +477,51 @@ p {
 .menu li a:hover::after {
   width: 100%;
   left: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar.open {
+    max-height: 100svh;
+  }
+
+  .topbar {
+    height: 84px;
+    margin: 0 22px;
+    padding-top: 14px;
+  }
+
+  #menu {
+    height: 74px;
+    width: 74px;
+  }
+
+  #close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    width: 42px;
+    margin-top: 0;
+  }
+
+  .menu,
+  .menu.open {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .menu.open {
+    max-height: calc(100svh - 84px);
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 24px;
+    gap: 2px;
+  }
+
+  .menu li a {
+    padding: 12px 4px;
+  }
 }
 
 /* ============================================
@@ -1209,7 +1222,9 @@ p {
    ============================================ */
 
 .gifts {
-  height: 100vh;
+  height: 100svh;
+  min-height: 100svh;
+  max-height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;

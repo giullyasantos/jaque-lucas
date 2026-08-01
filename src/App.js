@@ -119,6 +119,7 @@ function BackgroundManager() {
 // -- Main Component --
 function Main({ introReady = true }) {
   const location = useLocation();
+  const isGiftsPage = location.pathname === '/gifts';
 
   return (
     <>
@@ -134,7 +135,7 @@ function Main({ introReady = true }) {
           </Routes>
         </CSSTransition>
       </TransitionGroup>
-      <Footer />
+      {!isGiftsPage && <Footer />}
     </>
   );
 }
