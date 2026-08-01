@@ -1235,6 +1235,10 @@ p {
     margin-bottom: 0;
   }
 
+  .home-date-arc-svg text {
+    font-size: 15px;
+  }
+
   .home-date-middle {
     gap: 0.75rem;
   }
@@ -1251,6 +1255,16 @@ p {
 
   .home-date-day {
     font-size: clamp(5.2rem, 24vw, 6.4rem);
+  }
+
+  .home-date-year {
+    font-size: 1rem;
+    opacity: 0.78;
+  }
+
+  .home-dresscode {
+    font-size: 0.96rem;
+    line-height: 1.7;
   }
 
   .home-section-divider {

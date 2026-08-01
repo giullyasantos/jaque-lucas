@@ -28,7 +28,7 @@ const RSVP = () => {
   }, []);
 
   const handleCodeSubmit = () => {
-    if (invitation.toLowerCase() === '4002ds') {
+    if (invitation.trim().toUpperCase() === 'JL2026') {
       setIsAuthorized(true);
       setErrorMessage('');
     } else {
