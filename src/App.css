@@ -1505,7 +1505,7 @@ p {
   text-align: center;
   position: relative;
   overflow: visible;
-  padding: clamp(118px, 12vw, 158px) clamp(18px, 4vw, 48px) clamp(96px, 9vw, 130px);
+  padding: clamp(118px, 12vw, 158px) clamp(18px, 4vw, 48px) clamp(170px, 16vw, 230px);
 
   .gifts-loading-veil {
     position: fixed;
@@ -1632,17 +1632,6 @@ p {
 
   .button:hover span { color: #fff; }
 
-  .gifts-floral {
-    width: clamp(120px, 28vw, 172px);
-    height: clamp(56px, 13vw, 78px);
-    margin: clamp(22px, 4vw, 30px) auto 0;
-    background-image: url('./media/content/design-assets/flower-bottom-sm.png');
-    background-repeat: no-repeat;
-    background-position: center bottom;
-    background-size: contain;
-    opacity: 0.9;
-    pointer-events: none;
-  }
 }
 
 .gifts--ready {
@@ -1674,7 +1663,7 @@ p {
 
 @media screen and (max-width: 768px) {
   .gifts {
-    padding: 104px 18px 84px;
+    padding: 104px 18px 156px;
 
     p {
       font-size: 1.03em;
@@ -1694,11 +1683,6 @@ p {
       max-width: 220px;
       padding-left: 24px;
       padding-right: 24px;
-    }
-
-    .gifts-floral {
-      width: 136px;
-      height: 62px;
     }
 
   }
@@ -2161,22 +2145,6 @@ p {
   border-top-left-radius: 50% 180px;
   border-top-right-radius: 50% 180px;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: clamp(-58px, -4vw, -30px);
-    left: 50%;
-    width: min(560px, 86vw);
-    height: min(280px, 43vw);
-    background-image: url('./media/content/design-assets/half-flower-arc.png');
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: 100% auto;
-    opacity: 0.9;
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
-
   > div {
     position: relative;
     z-index: 1;
@@ -2279,12 +2247,6 @@ p {
 }
 
 @media screen and (max-width: 768px) {
-  .footer::before {
-    top: -30px;
-    width: min(360px, 88vw);
-    height: 180px;
-  }
-
   .footer-logo svg, .footer-logo img {
     width: 8vh;
     max-width: 100px;

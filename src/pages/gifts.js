@@ -82,7 +82,6 @@ const Gifts = () => {
             <span>Contribua</span>
           </a>
         </div>
-        <div className="gifts-floral" aria-hidden="true" />
       </div>
     </div>
   );

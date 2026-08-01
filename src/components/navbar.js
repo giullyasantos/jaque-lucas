@@ -15,7 +15,7 @@ const NavBar = () => {
     home: 'INÍCIO',
     gifts: 'PRESENTES',
     location: 'LOCALIZAÇÃO',
-    rsvp: 'RSVP',
+    rsvp: 'PRESENÇA',
   };
 
   const isHomePage = location.pathname === '/';

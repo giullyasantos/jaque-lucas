@@ -68,7 +68,7 @@ const RSVP = () => {
         </div>
         <div className="info">
           <div className="content">
-            <h1>RSVP</h1>
+            <h1>Confirmar Presença</h1>
             <p className="rsvp-subtitle">Confirme sua presença</p>
             <div className="rsvp-rule" />
             {!isAuthorized && (
