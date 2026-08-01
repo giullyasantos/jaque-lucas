@@ -55,7 +55,7 @@ const auth = new google.auth.GoogleAuth({
 });
 const sheets = google.sheets({ version: 'v4', auth });
 
-const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1mDlgX91sIhSxyW5iOILmz62v1tS20akmpPJcTAYe6ZQ';
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1M7_jUQaxw9nM96Fd_DlYK7TZ_395MJ5eLCBGBj2MfHc';
 
 // Endpoint to handle RSVP submissions
 app.post('/submit-rsvp', async (req, res) => {
