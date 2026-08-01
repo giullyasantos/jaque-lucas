@@ -1606,7 +1606,7 @@ p {
   }
 
   .description {
-    width: min(610px, calc(100vw - 36px));
+    width: min(660px, calc(100vw - 48px));
     padding: clamp(48px, 7vw, 68px) clamp(28px, 5vw, 58px) clamp(40px, 6vw, 58px);
     background:
       linear-gradient(180deg, rgba(255, 251, 248, 0.94), rgba(249, 235, 240, 0.88));
@@ -1621,7 +1621,7 @@ p {
     position: relative;
     z-index: 3;
     pointer-events: none;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .gifts-eyebrow {
@@ -1636,12 +1636,14 @@ p {
   }
 
   h1 {
-    font-size: clamp(4.3rem, 11vw, 7.4rem);
+    max-width: 100%;
+    font-size: clamp(4.25rem, 6vw, 5.9rem);
     color: var(--green-deep);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     margin: 0;
     line-height: 0.95;
     text-shadow: none;
+    white-space: nowrap;
   }
 
   .gifts-rule {
