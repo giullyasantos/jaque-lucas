@@ -160,8 +160,8 @@ p {
   pointer-events: none;
 }
 
-/* ── Logo + bar ── */
-.ld-logo-wrap {
+/* ── Verse + bar ── */
+.ld-verse-wrap {
   position: absolute;
   z-index: 10;
   display: flex;
@@ -171,15 +171,21 @@ p {
   animation: ld-in 0.9s var(--ease-out-expo) both;
 }
 
-.ld-logo-wrap--out {
+.ld-verse-wrap--out {
   animation: ld-out ease forwards;
   pointer-events: none;
 }
 
-.ld-logo-img {
-  width: clamp(130px, 22vw, 190px);
-  height: auto;
-  display: block;
+.ld-verse {
+  width: min(720px, 82vw);
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1.35rem, 4.5vw, 2.3rem);
+  font-style: italic;
+  line-height: 1.8;
+  text-align: center;
+  color: var(--green-mid);
+  letter-spacing: 0.03em;
 }
 
 .ld-bar-track {
@@ -242,7 +248,7 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ld-logo-wrap, .ld-logo-wrap--out,
+  .ld-verse-wrap, .ld-verse-wrap--out,
   .ld-pol--on, .ld-screen--exit, .ld-bg-reveal {
     animation: none !important;
     opacity: 1 !important;
@@ -606,24 +612,6 @@ p {
   transform: scaleY(1) translateY(0);
 }
 
-/* Stagger words in verse */
-.reveal-stagger .stagger-word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: none;
-}
-
-.reveal-stagger.is-visible .stagger-word {
-  animation: wordReveal 0.55s var(--ease-out-expo) forwards;
-  animation-delay: inherit;
-}
-
-@keyframes wordReveal {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0);    }
-}
-
 /* Icon cascade driven by parent class */
 .home-icons .reveal-up {
   opacity: 0;
@@ -642,7 +630,6 @@ p {
 @media (prefers-reduced-motion: reduce) {
   .reveal-up, .reveal-bloom, .reveal-unfold,
   .reveal-divider span, .reveal-divider svg,
-  .reveal-stagger .stagger-word,
   .home-icons .reveal-up {
     opacity: 1 !important;
     transform: none !important;
@@ -699,15 +686,15 @@ p {
 }
 
 .home-section--hero {
-  min-height: 100svh;
-  padding-top: clamp(175px, 20vw, 245px);
-  padding-bottom: clamp(96px, 11vw, 140px);
+  min-height: 92svh;
+  padding-top: clamp(110px, 13vw, 160px);
+  padding-bottom: clamp(110px, 13vw, 160px);
 }
 
 .home-section--blessing {
-  min-height: 86svh;
-  padding-top: clamp(100px, 12vw, 150px);
-  padding-bottom: clamp(110px, 13vw, 160px);
+  min-height: 100svh;
+  padding-top: clamp(130px, 16vw, 190px);
+  padding-bottom: clamp(130px, 16vw, 190px);
 }
 
 .home-section--details {
@@ -744,28 +731,6 @@ p {
   height: 10px;
   color: var(--green-mid);
   flex-shrink: 0;
-}
-
-/* Opening verse — epigraph style */
-.home-verse {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
-  color: var(--green-mid);
-  line-height: 1.95;
-  letter-spacing: 0.02em;
-  margin: 0;
-  max-width: 560px;
-  animation: fadeInUp 1.2s var(--ease-out-expo) both;
-}
-
-/* JL logo — wax seal */
-.home-jl-logo {
-  width: clamp(150px, 22vw, 200px);
-  height: auto;
-  display: block;
-  margin: 0 auto 1.2rem;
-  animation: fadeInUp 1.2s var(--ease-out-expo) 0.05s both;
 }
 
 /* "Com a bênção de Deus e de seus pais" */
@@ -1144,15 +1109,15 @@ p {
   }
 
   .home-section--hero {
-    min-height: 100svh;
-    padding-top: 164px;
-    padding-bottom: 82px;
+    min-height: 92svh;
+    padding-top: 96px;
+    padding-bottom: 104px;
   }
 
   .home-section--blessing {
-    min-height: 88svh;
-    padding-top: 92px;
-    padding-bottom: 104px;
+    min-height: 100svh;
+    padding-top: 132px;
+    padding-bottom: 118px;
   }
 
   .home-section--details {
@@ -1192,11 +1157,6 @@ p {
 
   .home-date-day {
     font-size: clamp(5.2rem, 24vw, 6.4rem);
-  }
-
-  .home-verse {
-    font-size: clamp(1.08rem, 4.4vw, 1.28rem);
-    line-height: 2;
   }
 
   .home-section-divider {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 
-import logo from '../media/content/design-assets/J&L-flower-circle.png';
 import p1 from '../media/content/photos/polaroids-loading-screen/1.jpg';
 import p2 from '../media/content/photos/polaroids-loading-screen/2.jpg';
 import p4 from '../media/content/photos/polaroids-loading-screen/4.jpg';
@@ -15,13 +14,13 @@ const POLAROIDS = [
 ];
 
 //  ── Timeline (all ms) ──────────────────────────────────────
-const BAR_DURATION   = 3000;
-const BAR_HOLD       = 400;
-const LOGO_OUT_START = BAR_DURATION + BAR_HOLD;   // 3400
-const LOGO_OUT_DUR   = 900;
-const LOGO_GONE      = LOGO_OUT_START + LOGO_OUT_DUR; // 4300
+const BAR_DURATION   = 3200;
+const VERSE_HOLD     = 500;
+const VERSE_OUT_START = BAR_DURATION + VERSE_HOLD;   // 3700
+const VERSE_OUT_DUR   = 900;
+const VERSE_GONE      = VERSE_OUT_START + VERSE_OUT_DUR; // 4600
 
-const FIRST_POL      = LOGO_GONE + 700;           // 5000
+const FIRST_POL      = VERSE_GONE + 500;           // 5100
 // p1 and p2 get 1600ms each, p4 and ring get 1000ms
 const POL_GAPS       = [1600, 1600, 1000];        // gap after card 0, 1, 2
 const POL_TIMES      = POLAROIDS.reduce((acc, _, i) => {
@@ -38,13 +37,13 @@ const EXIT_DUR       = 1400;
 // ─────────────────────────────────────────────────────────────
 
 const Loading = ({ onDone }) => {
-  const [phase, setPhase]          = useState('logo');
+  const [phase, setPhase]          = useState('verse');
   const [visibleCount, setVisible] = useState(0);
 
   useEffect(() => {
     const t = [];
-    t.push(setTimeout(() => setPhase('logo-out'),  LOGO_OUT_START));
-    t.push(setTimeout(() => setPhase('polaroids'), LOGO_GONE));
+    t.push(setTimeout(() => setPhase('verse-out'),  VERSE_OUT_START));
+    t.push(setTimeout(() => setPhase('polaroids'), VERSE_GONE));
     POL_TIMES.forEach((time, i) =>
       t.push(setTimeout(() => setVisible(i + 1), time))
     );
@@ -53,8 +52,8 @@ const Loading = ({ onDone }) => {
     return () => t.forEach(clearTimeout);
   }, []);
 
-  const logoVisible   = phase === 'logo' || phase === 'logo-out';
-  const logoFadingOut = phase === 'logo-out';
+  const verseVisible   = phase === 'verse' || phase === 'verse-out';
+  const verseFadingOut = phase === 'verse-out';
   const polsFading    = phase === 'pols-out';
   const showPols      = phase === 'polaroids' || phase === 'pols-out';
 
@@ -64,12 +63,14 @@ const Loading = ({ onDone }) => {
       style={phase === 'exit' ? { animationDuration: `${EXIT_DUR}ms` } : undefined}
       onAnimationEnd={() => { if (phase === 'exit' && onDone) onDone(); }}
     >
-      {logoVisible && (
+      {verseVisible && (
         <div
-          className={`ld-logo-wrap${logoFadingOut ? ' ld-logo-wrap--out' : ''}`}
-          style={logoFadingOut ? { animationDuration: `${LOGO_OUT_DUR}ms` } : undefined}
+          className={`ld-verse-wrap${verseFadingOut ? ' ld-verse-wrap--out' : ''}`}
+          style={verseFadingOut ? { animationDuration: `${VERSE_OUT_DUR}ms` } : undefined}
         >
-          <img src={logo} alt="J & L" className="ld-logo-img" />
+          <p className="ld-verse">
+            Deus uniu nossos caminhos e nós dois sabemos que uniremos nossa vida para sempre.
+          </p>
           <div className="ld-bar-track">
             <div className="ld-bar-fill" style={{ animationDuration: `${BAR_DURATION}ms` }} />
           </div>

@@ -17,24 +17,6 @@ const preloadImages = (images) => {
   return Promise.all(promises);
 };
 
-// Split text into word spans for stagger
-const StaggerWords = ({ text, baseDelay = 0, className = '' }) => {
-  const words = text.split(' ');
-  return (
-    <span className={className}>
-      {words.map((word, i) => (
-        <span
-          key={i}
-          className="stagger-word"
-          style={{ animationDelay: `${baseDelay + i * 80}ms` }}
-        >
-          {word}{i < words.length - 1 ? ' ' : ''}
-        </span>
-      ))}
-    </span>
-  );
-};
-
 const Divider = ({ className = '', isVisible = true }) => (
   <div className={`home-divider-ornament reveal-divider${isVisible ? ' is-visible' : ''}${className ? ` ${className}` : ''}`}>
     <span />
@@ -43,19 +25,6 @@ const Divider = ({ className = '', isVisible = true }) => (
     </svg>
     <span />
   </div>
-);
-
-const VerseBlock = ({ refProp, visible = true }) => (
-  <>
-    <p
-      ref={refProp}
-      className={`home-verse reveal-stagger${visible ? ' is-visible' : ''}`}
-    >
-      <StaggerWords text="Deus uniu nossos caminhos e nós," baseDelay={0} />
-      <br />
-      <StaggerWords text="sob Sua bênção, uniremos nossas vidas para sempre" baseDelay={200} />
-    </p>
-  </>
 );
 
 const ParentsBlock = ({ blessingRef, blessingVisible = true, parentsRef, parentsVisible = true }) => (
@@ -182,11 +151,10 @@ const ActionsBlock = ({ dresscodeRef, dresscodeVisible = true, iconsRef, iconsVi
 );
 
 const HomeClassic = () => {
-  const [verseRef,    verseVisible]    = useReveal(0.2);
-  const [div1Ref,     div1Visible]     = useReveal(0.5);
   const [blessingRef, blessingVisible] = useReveal(0.3);
   const [parentsRef,  parentsVisible]  = useReveal(0.15);
   const [blessingSectionRef, blessingSectionVisible] = useReveal(0.18);
+  const [heroSectionRef, heroSectionVisible] = useReveal(0.18);
   const [detailsSectionRef,  detailsSectionVisible]  = useReveal(0.18);
   const [dresscodeRef,dresscodeVisible]= useReveal(0.3);
   const [iconsRef,    iconsVisible]    = useReveal(0.2);
@@ -195,24 +163,23 @@ const HomeClassic = () => {
   return (
     <section className="home-container fade-in">
       <div className="home-content">
-        <section className="home-section home-section--hero">
-          <DateBlock />
-        </section>
-
         <section
           ref={blessingSectionRef}
           className={`home-section home-section--blessing home-section--reveal reveal-up${blessingSectionVisible ? ' is-visible' : ''}`}
         >
-          <VerseBlock refProp={verseRef} visible={verseVisible} />
-          <div ref={div1Ref} className="home-section-divider">
-            <Divider isVisible={div1Visible} />
-          </div>
           <ParentsBlock
             blessingRef={blessingRef}
             blessingVisible={blessingVisible}
             parentsRef={parentsRef}
             parentsVisible={parentsVisible}
           />
+        </section>
+
+        <section
+          ref={heroSectionRef}
+          className={`home-section home-section--hero home-section--reveal reveal-up${heroSectionVisible ? ' is-visible' : ''}`}
+        >
+          <DateBlock />
         </section>
 
         <section

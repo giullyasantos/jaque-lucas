@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export function useReveal(threshold = 0.15) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
