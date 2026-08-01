@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
 
-import giftsDesktop from '../media/giftsDesktop.webp';
 import giftsMobile from '../media/giftsMobile.webp';
 
-const getGiftBackground = () => (
-  window.innerWidth <= 768 ? giftsMobile : giftsDesktop
-);
+const getGiftBackground = () => giftsMobile;
 
 const preloadImage = (src) => new Promise((resolve) => {
   const img = new Image();

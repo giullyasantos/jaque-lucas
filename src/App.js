@@ -22,7 +22,6 @@ import Loading from './components/loader';
 // -- Media --
 import coupleDesktop from './media/HomeDesktop.png';
 import coupleMobile from './media/HomeDesktop.png';
-import giftsDesktop from './media/giftsDesktop.webp';
 import giftsMobile from './media/giftsMobile.webp';
 
 const designAssetContext = require.context('./media/content/design-assets', false, /\.(png|jpe?g|webp)$/);
@@ -31,7 +30,6 @@ const photoContext = require.context('./media/content/photos', true, /\.(png|jpe
 const siteImages = [
   coupleDesktop,
   coupleMobile,
-  giftsDesktop,
   giftsMobile,
   ...designAssetContext.keys().map(designAssetContext),
   ...photoContext.keys().map(photoContext),
@@ -90,7 +88,7 @@ function BackgroundManager() {
 
   const getBackgroundForRoute = (path, mobile) => {
     if (path === '/rsvp') return mobile ? coupleMobile : coupleDesktop;
-    if (path === '/gifts') return mobile ? giftsMobile : giftsDesktop;
+    if (path === '/gifts') return giftsMobile;
     return mobile ? coupleMobile : coupleDesktop;
   };
 
