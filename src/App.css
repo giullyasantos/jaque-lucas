@@ -131,6 +131,11 @@ p {
 }
 
 @keyframes ld-screen-dissolve {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-18px); }
+}
+
+@keyframes bg-crossfade-out {
   from { opacity: 1; }
   to   { opacity: 0; }
 }
@@ -158,6 +163,7 @@ p {
 .ld-screen--exit {
   animation: ld-screen-dissolve ease forwards;
   pointer-events: none;
+  will-change: opacity, transform;
 }
 
 /* ── Verse + bar ── */
@@ -249,10 +255,12 @@ p {
 
 @media (prefers-reduced-motion: reduce) {
   .ld-verse-wrap, .ld-verse-wrap--out,
-  .ld-pol--on, .ld-screen--exit, .ld-bg-reveal {
+  .ld-pol--on, .ld-screen--exit, .ld-bg-reveal,
+  .app-shell, .background-container--previous {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -281,22 +289,61 @@ p {
   z-index: 0;
 }
 
-.background-container {
+.app-shell {
+  min-height: 100svh;
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+}
+
+.app-shell--ready {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.app-shell--waiting {
+  pointer-events: none;
+}
+
+.background-stack {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--cream-warm);
+  pointer-events: none;
+}
+
+.background-container {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  min-height: 100svh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: -1;
   opacity: 1;
-  transition: opacity 0.4s ease-in-out;
+  transform: translateZ(0);
 }
 
 .background-container--home {
   background-position: center 58%;
+}
+
+.background-container--gifts {
+  background-position: center;
+}
+
+.background-container--previous {
+  z-index: 2;
+  animation: bg-crossfade-out 0.7s var(--ease-out-expo) forwards;
+}
+
+.background-container--current {
+  z-index: 1;
 }
 
 .background-container--home::after {
@@ -670,6 +717,8 @@ p {
 }
 
 .home-section {
+  position: relative;
+  isolation: isolate;
   width: 100%;
   min-height: 82svh;
   display: flex;
@@ -700,6 +749,33 @@ p {
 .home-section--details {
   min-height: 92svh;
   padding-bottom: clamp(180px, 20vw, 250px);
+}
+
+.home-section--blessing::before,
+.home-section--details::after {
+  content: "";
+  position: absolute;
+  width: clamp(105px, 13vw, 170px);
+  aspect-ratio: 1;
+  background-image: url('./media/content/design-assets/side-of-flowers.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.home-section--blessing::before {
+  top: clamp(88px, 11vw, 140px);
+  left: clamp(-86px, -7vw, -38px);
+  opacity: 0.5;
+  transform: rotate(-8deg);
+}
+
+.home-section--details::after {
+  top: clamp(120px, 15vw, 210px);
+  right: clamp(-96px, -8vw, -42px);
+  opacity: 0.42;
+  transform: scaleX(-1) rotate(-6deg);
 }
 
 .home-section-divider {
@@ -1086,6 +1162,10 @@ p {
     background-position: center 72%;
   }
 
+  .background-container--gifts {
+    background-position: center top;
+  }
+
   .background-container--home::after {
     background:
       linear-gradient(
@@ -1123,6 +1203,20 @@ p {
   .home-section--details {
     min-height: 92svh;
     padding-bottom: 148px;
+  }
+
+  .home-section--blessing::before {
+    top: 118px;
+    left: -42px;
+    width: 92px;
+    opacity: 0.42;
+  }
+
+  .home-section--details::after {
+    top: 112px;
+    right: -48px;
+    width: 102px;
+    opacity: 0.34;
   }
 
   .home-couple {
@@ -1226,8 +1320,11 @@ p {
     inset: 0;
     z-index: 101;
     background: var(--cream);
+    visibility: visible;
     opacity: 1;
-    transition: opacity 1.15s var(--ease-out-expo);
+    transition:
+      opacity 1.15s var(--ease-out-expo),
+      visibility 0s linear 0s;
     pointer-events: none;
   }
 
@@ -1247,6 +1344,23 @@ p {
     transform: translateY(24px);
     position: relative;
     z-index: 3;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .description::before {
+    content: "";
+    position: absolute;
+    top: clamp(-175px, -14vw, -118px);
+    left: 50%;
+    width: min(510px, 86vw);
+    height: min(260px, 44vw);
+    background-image: url('./media/content/design-assets/half-flower-arc.png');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;
+    opacity: 0.88;
+    transform: translateX(-50%);
     pointer-events: none;
   }
 
@@ -1328,6 +1442,10 @@ p {
 .gifts--ready {
   .gifts-loading-veil {
     opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 1.15s var(--ease-out-expo),
+      visibility 0s linear 1.15s;
   }
 
   .description {
@@ -1360,6 +1478,13 @@ p {
 
     .description {
       padding: 48px 16px 40px;
+    }
+
+    .description::before {
+      top: -104px;
+      width: min(340px, 86vw);
+      height: 172px;
+      opacity: 0.82;
     }
   }
 }

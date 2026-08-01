@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
 
@@ -23,11 +23,14 @@ const waitForPaint = () => new Promise((resolve) => {
 const useGiftBackgroundReady = () => {
   const [backgroundReady, setBackgroundReady] = useState(false);
   const [backgroundSrc, setBackgroundSrc] = useState(getGiftBackground);
+  const loadedSrcRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
-      setBackgroundSrc(getGiftBackground());
-      setBackgroundReady(false);
+      const nextSrc = getGiftBackground();
+      setBackgroundSrc((currentSrc) => (
+        currentSrc === nextSrc ? currentSrc : nextSrc
+      ));
     };
 
     window.addEventListener('resize', handleResize);
@@ -37,11 +40,21 @@ const useGiftBackgroundReady = () => {
   useEffect(() => {
     let cancelled = false;
 
+    if (loadedSrcRef.current === backgroundSrc) {
+      setBackgroundReady(true);
+      return () => {
+        cancelled = true;
+      };
+    }
+
     setBackgroundReady(false);
     preloadImage(backgroundSrc)
       .then(waitForPaint)
       .then(() => {
-        if (!cancelled) setBackgroundReady(true);
+        if (!cancelled) {
+          loadedSrcRef.current = backgroundSrc;
+          setBackgroundReady(true);
+        }
       });
 
     return () => {

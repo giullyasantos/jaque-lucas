@@ -74,7 +74,7 @@ function ScrollToTop() {
 // -- BackgroundManager Component --
 function BackgroundManager() {
   const location = useLocation();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
 
   const getBackgroundForRoute = (path, mobile) => {
     if (path === '/rsvp') return mobile ? coupleMobile : coupleDesktop;
@@ -82,37 +82,70 @@ function BackgroundManager() {
     return mobile ? coupleMobile : coupleDesktop;
   };
 
-  const [currentBg, setCurrentBg] = useState(
-    () => getBackgroundForRoute(location.pathname, window.innerWidth <= 768)
+  const getRouteClass = (path) => (
+    path === '/' ? 'home' : path.slice(1) || 'home'
   );
-  const [fadeClass, setFadeClass] = useState('fade-in');
-  const isFirst = useRef(true);
+
+  const [activeBg, setActiveBg] = useState(() => ({
+    src: getBackgroundForRoute(location.pathname, window.innerWidth <= 768),
+    routeClass: getRouteClass(location.pathname),
+  }));
+  const [previousBg, setPreviousBg] = useState(null);
+  const transitionTimer = useRef(null);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => {
+      const nextIsMobile = window.innerWidth <= 768;
+      setIsMobile((current) => (current === nextIsMobile ? current : nextIsMobile));
+    };
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
-    // Skip the fade cycle on first mount — background is already correct
-    if (isFirst.current) {
-      isFirst.current = false;
+    const nextBg = {
+      src: getBackgroundForRoute(location.pathname, isMobile),
+      routeClass: getRouteClass(location.pathname),
+    };
+
+    if (activeBg.src === nextBg.src && activeBg.routeClass === nextBg.routeClass) {
       return;
     }
-    setFadeClass('fade-out');
-    const timer = setTimeout(() => {
-      setCurrentBg(getBackgroundForRoute(location.pathname, isMobile));
-      setFadeClass('fade-in');
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [location.pathname, isMobile]);
+
+    let cancelled = false;
+
+    preloadImages([nextBg.src]).then(() => {
+      if (cancelled) return;
+
+      setPreviousBg(activeBg);
+      setActiveBg(nextBg);
+      window.clearTimeout(transitionTimer.current);
+      transitionTimer.current = window.setTimeout(() => {
+        setPreviousBg(null);
+      }, 700);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeBg, isMobile, location.pathname]);
+
+  useEffect(() => () => window.clearTimeout(transitionTimer.current), []);
 
   return (
-    <div
-      className={`background-container background-container--${location.pathname === '/' ? 'home' : location.pathname.slice(1) || 'home'} ${fadeClass}`}
-      style={{ backgroundImage: currentBg ? `url(${currentBg})` : 'none' }}
-    />
+    <div className="background-stack" aria-hidden="true">
+      <div
+        className={`background-container background-container--${activeBg.routeClass} background-container--current`}
+        style={{ backgroundImage: activeBg.src ? `url(${activeBg.src})` : 'none' }}
+      />
+      {previousBg && (
+        <div
+          className={`background-container background-container--${previousBg.routeClass} background-container--previous`}
+          style={{ backgroundImage: previousBg.src ? `url(${previousBg.src})` : 'none' }}
+        />
+      )}
+    </div>
   );
 }
 
@@ -123,18 +156,20 @@ function Main({ introReady = true }) {
   return (
     <>
       <BackgroundManager />
-      <NavBar />
-      <TransitionGroup>
-        <CSSTransition key={location.pathname} timeout={500} classNames="fade" unmountOnExit>
-          <Routes>
-            <Route path="/" element={<Home introReady={introReady} />} />
-            <Route path="/gifts" element={<Gifts />} />
-            <Route path="/ourstory" element={<OurStory />} />
-            <Route path="/rsvp" element={<RSVP />} />
-          </Routes>
-        </CSSTransition>
-      </TransitionGroup>
-      <Footer />
+      <div className={`app-shell${introReady ? ' app-shell--ready' : ' app-shell--waiting'}`}>
+        <NavBar />
+        <TransitionGroup>
+          <CSSTransition key={location.pathname} timeout={500} classNames="fade" unmountOnExit>
+            <Routes>
+              <Route path="/" element={<Home introReady={introReady} />} />
+              <Route path="/gifts" element={<Gifts />} />
+              <Route path="/ourstory" element={<OurStory />} />
+              <Route path="/rsvp" element={<RSVP />} />
+            </Routes>
+          </CSSTransition>
+        </TransitionGroup>
+        <Footer />
+      </div>
     </>
   );
 }
