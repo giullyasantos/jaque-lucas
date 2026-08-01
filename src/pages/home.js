@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 import coupleDesktop from '../media/HomeDesktop.png';
 import coupleMobile from '../media/HomeDesktop.png';
-import jlLogo from '../media/content/design-assets/J&L-flower-circle.png';
 
 const preloadImages = (images) => {
   const promises = images.map(
@@ -46,17 +45,16 @@ const Divider = ({ className = '', isVisible = true }) => (
   </div>
 );
 
-const VerseBlock = ({ story = false, refProp, visible = true, dividerVisible = true }) => (
+const VerseBlock = ({ refProp, visible = true }) => (
   <>
     <p
       ref={refProp}
-      className={`home-verse reveal-stagger${visible ? ' is-visible' : ''}${story ? ' home-story-verse' : ''}`}
+      className={`home-verse reveal-stagger${visible ? ' is-visible' : ''}`}
     >
       <StaggerWords text="Deus uniu nossos caminhos e nós," baseDelay={0} />
       <br />
       <StaggerWords text="sob Sua bênção, uniremos nossas vidas para sempre" baseDelay={200} />
     </p>
-    {story && <Divider className="home-story-divider" isVisible={dividerVisible} />}
   </>
 );
 
@@ -186,10 +184,8 @@ const ActionsBlock = ({ dresscodeRef, dresscodeVisible = true, iconsRef, iconsVi
 const HomeClassic = () => {
   const [verseRef,    verseVisible]    = useReveal(0.2);
   const [div1Ref,     div1Visible]     = useReveal(0.5);
-  const [logoRef,     logoVisible]     = useReveal(0.3);
   const [blessingRef, blessingVisible] = useReveal(0.3);
   const [parentsRef,  parentsVisible]  = useReveal(0.15);
-  const [div2Ref,     div2Visible]     = useReveal(0.5);
   const [dresscodeRef,dresscodeVisible]= useReveal(0.3);
   const [iconsRef,    iconsVisible]    = useReveal(0.2);
   const [venueRef,    venueVisible]    = useReveal(0.15);
@@ -197,34 +193,36 @@ const HomeClassic = () => {
   return (
     <section className="home-container fade-in">
       <div className="home-content">
-        <VerseBlock refProp={verseRef} visible={verseVisible} />
-        <div ref={div1Ref}>
-          <Divider isVisible={div1Visible} />
-        </div>
-        <img
-          ref={logoRef}
-          src={jlLogo}
-          alt="J & L"
-          className={`home-jl-logo reveal-bloom${logoVisible ? ' is-visible' : ''}`}
-        />
-        <ParentsBlock
-          blessingRef={blessingRef}
-          blessingVisible={blessingVisible}
-          parentsRef={parentsRef}
-          parentsVisible={parentsVisible}
-        />
-        <div ref={div2Ref}>
-          <Divider isVisible={div2Visible} />
-        </div>
-        <DateBlock />
-        <ActionsBlock
-          dresscodeRef={dresscodeRef}
-          dresscodeVisible={dresscodeVisible}
-          iconsRef={iconsRef}
-          iconsVisible={iconsVisible}
-          venueRef={venueRef}
-          venueVisible={venueVisible}
-        />
+        <section className="home-section home-section--hero">
+          <DateBlock />
+        </section>
+
+        <section className="home-section home-section--verse">
+          <VerseBlock refProp={verseRef} visible={verseVisible} />
+          <div ref={div1Ref} className="home-section-divider">
+            <Divider isVisible={div1Visible} />
+          </div>
+        </section>
+
+        <section className="home-section home-section--parents">
+          <ParentsBlock
+            blessingRef={blessingRef}
+            blessingVisible={blessingVisible}
+            parentsRef={parentsRef}
+            parentsVisible={parentsVisible}
+          />
+        </section>
+
+        <section className="home-section home-section--details">
+          <ActionsBlock
+            dresscodeRef={dresscodeRef}
+            dresscodeVisible={dresscodeVisible}
+            iconsRef={iconsRef}
+            iconsVisible={iconsVisible}
+            venueRef={venueRef}
+            venueVisible={venueVisible}
+          />
+        </section>
       </div>
     </section>
   );
