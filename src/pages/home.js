@@ -28,7 +28,7 @@ const Divider = ({ className = '', isVisible = true }) => (
 );
 
 const DateBlock = () => (
-  <>
+  <div className="home-hero-inner">
     <h1 className="home-couple">Jaqueline & Lucas</h1>
     <p className="home-invite">convidam para o seu casamento</p>
 
@@ -56,7 +56,7 @@ const DateBlock = () => (
       </div>
       <div className="home-date-year">2026</div>
     </div>
-  </>
+  </div>
 );
 
 const ActionsBlock = ({ dresscodeRef, dresscodeVisible = true, iconsRef, iconsVisible = true, venueRef, venueVisible = true }) => (

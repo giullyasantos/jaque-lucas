@@ -905,8 +905,8 @@ p {
 
 .home-section--hero {
   min-height: 92svh;
-  padding-top: clamp(110px, 13vw, 160px);
-  padding-bottom: clamp(110px, 13vw, 160px);
+  padding-top: clamp(138px, 15vw, 190px);
+  padding-bottom: clamp(80px, 9vw, 120px);
 }
 
 .home-section--blessing {
@@ -918,6 +918,11 @@ p {
 .home-section--details {
   min-height: 92svh;
   padding-bottom: clamp(180px, 20vw, 250px);
+}
+
+.home-hero-inner {
+  width: 100%;
+  transform: translate3d(0, clamp(24px, 4vh, 42px), 0);
 }
 
 .home-section--blessing::before,
@@ -1359,8 +1364,8 @@ p {
 
   .home-section--hero {
     min-height: 92svh;
-    padding-top: 96px;
-    padding-bottom: 104px;
+    padding-top: 128px;
+    padding-bottom: 72px;
   }
 
   .home-section--blessing {
@@ -1372,6 +1377,10 @@ p {
   .home-section--details {
     min-height: 92svh;
     padding-bottom: 148px;
+  }
+
+  .home-hero-inner {
+    transform: translate3d(0, 28px, 0);
   }
 
   .home-section--blessing::before {
@@ -1531,22 +1540,6 @@ p {
     overflow: visible;
   }
 
-  .description::before {
-    content: "";
-    position: absolute;
-    top: clamp(-175px, -14vw, -118px);
-    left: 50%;
-    width: min(510px, 86vw);
-    height: min(260px, 44vw);
-    background-image: url('./media/content/design-assets/half-flower-arc.png');
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: 100% auto;
-    opacity: 0.88;
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
-
   h1 {
     font-size: clamp(3.5rem, 9vw, 7rem);
     color: var(--cream);
@@ -1663,12 +1656,6 @@ p {
       padding: 48px 16px 40px;
     }
 
-    .description::before {
-      top: -104px;
-      width: min(340px, 86vw);
-      height: 172px;
-      opacity: 0.82;
-    }
   }
 }
 
@@ -2128,6 +2115,27 @@ p {
   position: relative;
   border-top-left-radius: 50% 180px;
   border-top-right-radius: 50% 180px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: clamp(-142px, -10vw, -92px);
+    left: 50%;
+    width: min(560px, 86vw);
+    height: min(280px, 43vw);
+    background-image: url('./media/content/design-assets/half-flower-arc.png');
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;
+    opacity: 0.9;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  > div {
+    position: relative;
+    z-index: 1;
+  }
 
   .footer-logo {
     margin-bottom: 36px;
