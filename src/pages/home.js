@@ -186,6 +186,8 @@ const HomeClassic = () => {
   const [div1Ref,     div1Visible]     = useReveal(0.5);
   const [blessingRef, blessingVisible] = useReveal(0.3);
   const [parentsRef,  parentsVisible]  = useReveal(0.15);
+  const [blessingSectionRef, blessingSectionVisible] = useReveal(0.18);
+  const [detailsSectionRef,  detailsSectionVisible]  = useReveal(0.18);
   const [dresscodeRef,dresscodeVisible]= useReveal(0.3);
   const [iconsRef,    iconsVisible]    = useReveal(0.2);
   const [venueRef,    venueVisible]    = useReveal(0.15);
@@ -197,7 +199,10 @@ const HomeClassic = () => {
           <DateBlock />
         </section>
 
-        <section className="home-section home-section--blessing">
+        <section
+          ref={blessingSectionRef}
+          className={`home-section home-section--blessing home-section--reveal reveal-up${blessingSectionVisible ? ' is-visible' : ''}`}
+        >
           <VerseBlock refProp={verseRef} visible={verseVisible} />
           <div ref={div1Ref} className="home-section-divider">
             <Divider isVisible={div1Visible} />
@@ -210,7 +215,10 @@ const HomeClassic = () => {
           />
         </section>
 
-        <section className="home-section home-section--details">
+        <section
+          ref={detailsSectionRef}
+          className={`home-section home-section--details home-section--reveal reveal-up${detailsSectionVisible ? ' is-visible' : ''}`}
+        >
           <ActionsBlock
             dresscodeRef={dresscodeRef}
             dresscodeVisible={dresscodeVisible}
