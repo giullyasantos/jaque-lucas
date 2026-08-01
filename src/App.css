@@ -1252,14 +1252,14 @@ p {
    ============================================ */
 
 .gifts {
-  height: 100svh;
   min-height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  padding: clamp(110px, 12vw, 150px) 0 clamp(70px, 8vw, 110px);
 
   .gifts-loading-veil {
     position: fixed;
@@ -1390,6 +1390,8 @@ p {
 
 @media screen and (max-width: 768px) {
   .gifts {
+    padding: 104px 0 64px;
+
     p {
       font-size: 1em;
       padding-left: 8%;
