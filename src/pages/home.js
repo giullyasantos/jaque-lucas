@@ -197,14 +197,11 @@ const HomeClassic = () => {
           <DateBlock />
         </section>
 
-        <section className="home-section home-section--verse">
+        <section className="home-section home-section--blessing">
           <VerseBlock refProp={verseRef} visible={verseVisible} />
           <div ref={div1Ref} className="home-section-divider">
             <Divider isVisible={div1Visible} />
           </div>
-        </section>
-
-        <section className="home-section home-section--parents">
           <ParentsBlock
             blessingRef={blessingRef}
             blessingVisible={blessingVisible}
