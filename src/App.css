@@ -125,6 +125,18 @@ p {
   to   { opacity: 0; transform: scale(0.95); }
 }
 
+@keyframes ld-logo-breathe {
+  0%, 100% {
+    opacity: 0.94;
+    transform: translateZ(0) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateZ(0) scale(1.035);
+  }
+}
+
 @keyframes ld-letter-pop {
   0%   { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.96); }
   70%  { opacity: 1; transform: translate3d(0, -2px, 0) scale(1.01); }
@@ -154,6 +166,16 @@ p {
 @keyframes bg-crossfade-out {
   from { opacity: 1; }
   to   { opacity: 0; }
+}
+
+@keyframes home-bg-drift {
+  from { transform: translate3d(0, 0, 0) scale(1.012); }
+  to   { transform: translate3d(0, -1.4%, 0) scale(1.032); }
+}
+
+@keyframes home-motes-drift {
+  from { transform: translate3d(-1.2%, 1.4%, 0) scale(1.01); }
+  to   { transform: translate3d(1.4%, -1.8%, 0) scale(1.04); }
 }
 
 
@@ -209,6 +231,9 @@ p {
   width: clamp(130px, 22vw, 190px);
   height: auto;
   display: block;
+  animation: ld-logo-breathe 3.8s var(--ease-in-out) infinite;
+  transform-origin: center;
+  will-change: transform, opacity;
 }
 
 .ld-load-track {
@@ -385,11 +410,18 @@ p {
   .ld-verse-wrap, .ld-verse-wrap--out, .ld-verse-letter,
   .ld-blessing-wrap, .ld-blessing-wrap--out,
   .ld-pol--on, .ld-screen--exit, .ld-bg-reveal,
-  .app-shell, .background-container--previous {
+  .ld-logo-img,
+  .app-shell, .background-container--previous,
+  .background-container--home.background-container--current {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  .background-container--home::before {
+    animation: none !important;
+    transform: none !important;
   }
 }
 
@@ -500,6 +532,35 @@ p {
 
 .background-container--home {
   background-position: center 58%;
+}
+
+.background-container--home.background-container--current {
+  animation: home-bg-drift 26s var(--ease-in-out) infinite alternate;
+  transform-origin: center 62%;
+  will-change: transform;
+}
+
+.background-container--home::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(184, 14, 84, 0.12) 0 0.8px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 228, 238, 0.24) 0 1.1px, transparent 1.9px);
+  background-position:
+    12px 18px,
+    84px 64px,
+    138px 122px;
+  background-size:
+    128px 156px,
+    178px 206px,
+    236px 268px;
+  opacity: 0.34;
+  pointer-events: none;
+  animation: home-motes-drift 18s var(--ease-in-out) infinite alternate;
+  will-change: transform;
 }
 
 .home-bottom-floral-border {
