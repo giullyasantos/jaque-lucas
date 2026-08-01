@@ -55,11 +55,20 @@ const siteImages = [
 
 // Helper function for preloading images
 const preloadImages = (images) => {
-  const promises = images.map(
+  const promises = Array.from(new Set(images)).map(
     (src) =>
       new Promise((resolve) => {
         const img = new Image();
-        img.onload = resolve;
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.onload = () => {
+          if (!img.decode) {
+            resolve();
+            return;
+          }
+
+          img.decode().catch(() => undefined).finally(resolve);
+        };
         img.onerror = resolve;
         img.src = src;
       })

@@ -214,8 +214,10 @@ const storyCards = [
 
 const HomeStory = ({ introReady }) => {
   const storyRef = useRef(null);
+  const stageRef = useRef(null);
+  const activeCardRef = useRef(0);
+  const storyActiveRef = useRef(false);
   const [activeCard, setActiveCard] = useState(0);
-  const [storyActive, setStoryActive] = useState(false);
 
   useEffect(() => {
     if (!introReady) return;
@@ -249,8 +251,15 @@ const HomeStory = ({ introReady }) => {
       );
       const isStoryVisible = rect.top <= window.innerHeight && rect.bottom >= 0;
 
-      setActiveCard(nextCard);
-      setStoryActive(isStoryVisible);
+      if (nextCard !== activeCardRef.current) {
+        activeCardRef.current = nextCard;
+        setActiveCard(nextCard);
+      }
+
+      if (isStoryVisible !== storyActiveRef.current) {
+        storyActiveRef.current = isStoryVisible;
+        stageRef.current?.classList.toggle('is-active', isStoryVisible);
+      }
     };
 
     const scheduleUpdate = () => {
@@ -278,7 +287,7 @@ const HomeStory = ({ introReady }) => {
   return (
     <section className={`home-container home-container--story fade-in${introReady ? ' is-ready' : ''}`}>
       <div className="home-story" ref={storyRef}>
-        <div className={`home-story-stage${storyActive ? ' is-active' : ''}`}>
+        <div className="home-story-stage" ref={stageRef}>
           <AnimatePresence mode="wait">
             <motion.section
               key={currentCard.key}
