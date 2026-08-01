@@ -502,6 +502,21 @@ p {
   background-position: center 58%;
 }
 
+.background-container--home::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: clamp(96px, 11vw, 148px);
+  background-image: url('./media/content/design-assets/flower-bottom-lg.png');
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  background-size: auto 100%;
+  pointer-events: none;
+}
+
 .background-container--gifts {
   background-position: center;
 }
@@ -519,6 +534,7 @@ p {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background:
     linear-gradient(
@@ -1334,6 +1350,11 @@ p {
   .background-container--home {
     background-size: auto 100%;
     background-position: center 72%;
+  }
+
+  .background-container--home::before {
+    height: 88px;
+    background-image: url('./media/content/design-assets/flower-bottom-md.png');
   }
 
   .background-container--gifts {
