@@ -144,7 +144,11 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
           className={`ld-blessing-wrap${blessingFading ? ' ld-blessing-wrap--out' : ''}`}
           style={blessingFading ? { animationDuration: `${BLESSING_OUT_DUR}ms` } : undefined}
         >
-          <p className="ld-blessing-title">Com a bênção de Deus e de seus pais</p>
+          <p className="ld-blessing-title">
+            Com a bênção de Deus
+            <br />
+            e de seus pais
+          </p>
           <div className="ld-blessing-card">
             <div className="ld-blessing-col">
               <span>Joacir Pereira</span>

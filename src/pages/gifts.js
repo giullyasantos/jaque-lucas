@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
-import { Link } from 'react-router-dom';
 
 import giftsDesktop from '../media/giftsDesktop.webp';
 import giftsMobile from '../media/giftsMobile.webp';
@@ -72,16 +71,18 @@ const Gifts = () => {
     <div className={`gifts ${backgroundReady ? 'gifts--ready' : 'gifts--loading'}`}>
       <div className="gifts-loading-veil" aria-hidden="true" />
       <div className="description">
-        <h1 style={{ fontSize: '4.5em' }}>PRESENTES</h1>
+        <p className="gifts-eyebrow">Com carinho</p>
+        <h1>Presentes</h1>
         <div className="gifts-rule" />
-        <p>
-          Sua presença no nosso casamento é o maior presente que poderíamos pedir. Se desejar nos honrar com um presente, registramos itens que nos ajudarão a começar nossa nova vida juntos.
+        <p className="gifts-copy">
+          Sua presença é o nosso maior presente. Se desejar nos abençoar de outra forma, preparamos uma contribuição para o início da nossa vida juntos.
         </p>
         <div className="registry">
-          <Link className="button" to="https://www.zola.com/registry/damarisandsidiclei">
+          <a className="button" href="https://www.zola.com/registry/damarisandsidiclei" target="_blank" rel="noopener noreferrer">
             <span>Contribua</span>
-          </Link>
+          </a>
         </div>
+        <div className="gifts-floral" aria-hidden="true" />
       </div>
     </div>
   );

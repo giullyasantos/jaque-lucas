@@ -278,9 +278,9 @@ p {
 .ld-blessing-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(0.82rem, 2vw, 1rem);
-  letter-spacing: 0.22em;
-  line-height: 1.9;
+  font-size: clamp(1.12rem, 3vw, 1.5rem);
+  letter-spacing: 0.2em;
+  line-height: 1.65;
   text-align: center;
   text-transform: uppercase;
   color: var(--green-mid);
@@ -418,8 +418,8 @@ p {
   }
 
   .ld-blessing-title {
-    font-size: 0.82rem;
-    line-height: 1.8;
+    font-size: 1.08rem;
+    line-height: 1.75;
   }
 
   .ld-blessing-card {
@@ -1505,7 +1505,7 @@ p {
   text-align: center;
   position: relative;
   overflow: visible;
-  padding: clamp(110px, 12vw, 150px) 0 clamp(70px, 8vw, 110px);
+  padding: clamp(118px, 12vw, 158px) clamp(18px, 4vw, 48px) clamp(96px, 9vw, 130px);
 
   .gifts-loading-veil {
     position: fixed;
@@ -1521,17 +1521,16 @@ p {
   }
 
   .description {
-    background: linear-gradient(
-      to bottom,
-      rgba(240, 140, 170, 0.08) 0%,
-      rgba(230, 100, 145, 0.28) 30%,
-      rgba(220, 80, 125, 0.62) 65%,
-      rgba(210, 65, 110, 0.76) 100%
-    );
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    width: 100vw;
-    padding: 64px 20px 56px;
+    width: min(610px, calc(100vw - 36px));
+    padding: clamp(48px, 7vw, 68px) clamp(28px, 5vw, 58px) clamp(40px, 6vw, 58px);
+    background:
+      linear-gradient(180deg, rgba(255, 251, 248, 0.94), rgba(249, 235, 240, 0.88));
+    border: 0.75px solid rgba(184, 14, 84, 0.22);
+    box-shadow:
+      0 28px 80px rgba(102, 12, 47, 0.18),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.58);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     opacity: 0;
     transform: translateY(24px);
     position: relative;
@@ -1540,34 +1539,45 @@ p {
     overflow: visible;
   }
 
+  .gifts-eyebrow {
+    margin: 0 0 0.4rem;
+    padding: 0;
+    font-family: var(--font-body);
+    font-size: clamp(0.95rem, 2.2vw, 1.12rem);
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--green-light);
+    text-shadow: none;
+  }
+
   h1 {
-    font-size: clamp(3.5rem, 9vw, 7rem);
-    color: var(--cream);
-    letter-spacing: 0.06em;
-    margin: 0 0 0.25rem;
-    text-shadow: 0 2px 20px rgba(160, 30, 70, 0.3);
+    font-size: clamp(4.3rem, 11vw, 7.4rem);
+    color: var(--green-deep);
+    letter-spacing: 0.02em;
+    margin: 0;
+    line-height: 0.95;
+    text-shadow: none;
   }
 
   .gifts-rule {
-    width: 36px;
+    width: 52px;
     height: 0.5px;
-    background: rgba(255, 220, 235, 0.7);
-    margin: 1.5rem auto;
+    background: rgba(184, 14, 84, 0.36);
+    margin: 1.75rem auto 1.65rem;
   }
 
   p {
-    color: #fff;
-    padding-left: 20%;
-    padding-right: 20%;
+    color: var(--green-mid);
+    padding-left: 0;
+    padding-right: 0;
     font-style: italic;
-    font-size: 1.1em;
-    line-height: 1.8;
+    font-size: clamp(1.08rem, 2vw, 1.22rem);
+    line-height: 1.85;
     font-weight: 500;
     opacity: 1;
-    margin: 0 0 2.25rem;
-    text-shadow:
-      0 1px 3px rgba(0,0,0,0.5),
-      0 2px 12px rgba(140, 0, 50, 0.6);
+    margin: 0 auto 2.1rem;
+    max-width: 470px;
+    text-shadow: none;
   }
 
   .registry {
@@ -1580,23 +1590,27 @@ p {
   .button {
     font-family: var(--font-body);
     text-decoration: none;
-    color: #fff;
-    border: 0.75px solid rgba(255, 220, 235, 0.8);
-    font-size: 0.9em;
+    color: var(--cream);
+    background: var(--green-mid);
+    border: 0.75px solid var(--green-mid);
+    font-size: 0.84em;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    padding: 13px 44px;
+    padding: 14px 46px;
     display: inline-block;
     position: relative;
     overflow: hidden;
-    transition: border-color 0.35s ease;
+    transition:
+      border-color 0.35s ease,
+      background-color 0.35s ease,
+      transform 0.35s var(--ease-out-expo);
   }
 
   .button::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.16);
     transform: scaleY(0);
     transform-origin: bottom;
     transition: transform 0.38s var(--ease-out-expo);
@@ -1604,7 +1618,11 @@ p {
   }
 
   .button:hover::before { transform: scaleY(1); }
-  .button:hover { border-color: #fff; }
+  .button:hover {
+    background: var(--green-deep);
+    border-color: var(--green-deep);
+    transform: translateY(-2px);
+  }
 
   .button span {
     position: relative;
@@ -1613,6 +1631,18 @@ p {
   }
 
   .button:hover span { color: #fff; }
+
+  .gifts-floral {
+    width: clamp(120px, 28vw, 172px);
+    height: clamp(56px, 13vw, 78px);
+    margin: clamp(22px, 4vw, 30px) auto 0;
+    background-image: url('./media/content/design-assets/flower-bottom-sm.png');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    opacity: 0.9;
+    pointer-events: none;
+  }
 }
 
 .gifts--ready {
@@ -1644,16 +1674,31 @@ p {
 
 @media screen and (max-width: 768px) {
   .gifts {
-    padding: 104px 0 64px;
+    padding: 104px 18px 84px;
 
     p {
-      font-size: 1em;
-      padding-left: 8%;
-      padding-right: 8%;
+      font-size: 1.03em;
     }
 
     .description {
-      padding: 48px 16px 40px;
+      width: min(100%, 360px);
+      padding: 46px 24px 38px;
+    }
+
+    h1 {
+      font-size: clamp(3.4rem, 17vw, 4.25rem);
+    }
+
+    .button {
+      width: 100%;
+      max-width: 220px;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .gifts-floral {
+      width: 136px;
+      height: 62px;
     }
 
   }
@@ -1668,7 +1713,7 @@ p {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 0 0 80px;
+  padding: 0 0 170px;
 
   .thank-you {
     animation: fadeIn 1s var(--ease-out-expo) both;
@@ -1904,7 +1949,7 @@ p {
   .rsvp {
     height: auto;
     padding-top: 0;
-    padding-bottom: 60px;
+    padding-bottom: 136px;
 
     .container {
       flex-direction: column;
@@ -2119,7 +2164,7 @@ p {
   &::before {
     content: "";
     position: absolute;
-    top: clamp(-142px, -10vw, -92px);
+    top: clamp(-58px, -4vw, -30px);
     left: 50%;
     width: min(560px, 86vw);
     height: min(280px, 43vw);
@@ -2234,6 +2279,12 @@ p {
 }
 
 @media screen and (max-width: 768px) {
+  .footer::before {
+    top: -30px;
+    width: min(360px, 88vw);
+    height: 180px;
+  }
+
   .footer-logo svg, .footer-logo img {
     width: 8vh;
     max-width: 100px;
