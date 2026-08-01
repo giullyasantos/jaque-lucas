@@ -56,6 +56,7 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: 'v4', auth });
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1M7_jUQaxw9nM96Fd_DlYK7TZ_395MJ5eLCBGBj2MfHc';
+const SHEET_RANGE = process.env.SHEET_RANGE || 'Página1!A:E';
 
 // Endpoint to handle RSVP submissions
 app.post('/submit-rsvp', async (req, res) => {
@@ -67,7 +68,7 @@ app.post('/submit-rsvp', async (req, res) => {
     // Append the RSVP data to the Google Sheet
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:E', // Adjust this range to match your Sheet layout
+      range: SHEET_RANGE,
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[ firstName, lastName, people, whoComing, allergies ]],
