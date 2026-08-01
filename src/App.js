@@ -126,7 +126,7 @@ function BackgroundManager() {
 
   return (
     <div
-      className={`background-container ${fadeClass}`}
+      className={`background-container background-container--${location.pathname === '/' ? 'home' : location.pathname.slice(1) || 'home'} ${fadeClass}`}
       style={{ backgroundImage: currentBg ? `url(${currentBg})` : 'none' }}
     />
   );
