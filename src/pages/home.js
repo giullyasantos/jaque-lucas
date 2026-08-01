@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
 import { useReveal } from '../hooks/useReveal';
 import coupleDesktop from '../media/HomeDesktop.png';
 import coupleMobile from '../media/HomeDesktop.png';
@@ -183,15 +184,51 @@ const ActionsBlock = ({ dresscodeRef, dresscodeVisible = true, iconsRef, iconsVi
   </>
 );
 
+const storyCards = [
+  {
+    key: 'verse',
+    className: 'home-story-card--verse',
+    render: (introReady) => <VerseBlock story visible={introReady} dividerVisible={introReady} />,
+  },
+  {
+    key: 'logo',
+    className: 'home-story-card--logo',
+    render: () => <img src={jlLogo} alt="J & L" className="home-story-logo" />,
+  },
+  {
+    key: 'parents',
+    className: 'home-story-card--parents home-story-content--parents',
+    render: () => <ParentsBlock />,
+  },
+  {
+    key: 'date',
+    className: 'home-story-card--date',
+    render: () => <DateBlock />,
+  },
+  {
+    key: 'final',
+    className: 'home-story-card--final',
+    render: () => <ActionsBlock />,
+  },
+];
+
 const HomeStory = ({ introReady }) => {
-  const logoPanelRef = useRef(null);
-  const [activePanels, setActivePanels] = useState({});
+  const storyRef = useRef(null);
+  const [activeCard, setActiveCard] = useState(0);
+  const [storyActive, setStoryActive] = useState(false);
 
   useEffect(() => {
     if (!introReady) return;
 
     sessionStorage.setItem('homeStorySeen', 'true');
-    setActivePanels((current) => ({ ...current, verse: true }));
+  }, [introReady]);
+
+  useEffect(() => {
+    if (!introReady) return undefined;
+
+    window.history.scrollRestoration = 'manual';
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    return undefined;
   }, [introReady]);
 
   useEffect(() => {
@@ -199,92 +236,63 @@ const HomeStory = ({ introReady }) => {
 
     let frame = null;
 
-    const updateLogoProgress = () => {
-      const panel = logoPanelRef.current;
-      if (!panel) return;
+    const updateActiveCard = () => {
+      const story = storyRef.current;
+      if (!story) return;
 
-      const rect = panel.getBoundingClientRect();
-      const travel = Math.max(1, rect.height - window.innerHeight);
-      const progress = Math.min(1, Math.max(0, -rect.top / travel));
+      const rect = story.getBoundingClientRect();
+      const totalScrollable = Math.max(1, rect.height - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, -rect.top / totalScrollable));
+      const nextCard = Math.min(
+        storyCards.length - 1,
+        Math.max(0, Math.floor(progress * storyCards.length))
+      );
+      const isStoryVisible = rect.top <= window.innerHeight && rect.bottom >= 0;
 
-      panel.style.setProperty('--logo-scale', (0.72 + progress * 1.08).toFixed(4));
-      panel.style.setProperty('--logo-y', `${((1 - progress) * 24).toFixed(3)}vh`);
-      panel.style.setProperty('--logo-opacity', Math.min(1, 0.25 + progress * 1.15).toFixed(4));
+      setActiveCard(nextCard);
+      setStoryActive(isStoryVisible);
     };
 
-    const scheduleLogoProgress = () => {
+    const scheduleUpdate = () => {
       if (frame !== null) return;
 
       frame = requestAnimationFrame(() => {
         frame = null;
-        updateLogoProgress();
+        updateActiveCard();
       });
     };
 
-    updateLogoProgress();
-    window.addEventListener('scroll', scheduleLogoProgress, { passive: true });
-    window.addEventListener('resize', scheduleLogoProgress);
+    updateActiveCard();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
 
     return () => {
       if (frame !== null) cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', scheduleLogoProgress);
-      window.removeEventListener('resize', scheduleLogoProgress);
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
     };
   }, [introReady]);
 
-  useEffect(() => {
-    if (!introReady) return undefined;
-
-    const panels = document.querySelectorAll('[data-story-panel]');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-
-          const panel = entry.target.getAttribute('data-story-panel');
-          setActivePanels((current) => ({ ...current, [panel]: true }));
-          observer.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.42 }
-    );
-
-    panels.forEach((panel) => observer.observe(panel));
-    return () => observer.disconnect();
-  }, [introReady]);
+  const currentCard = storyCards[activeCard] || storyCards[0];
 
   return (
     <section className={`home-container home-container--story fade-in${introReady ? ' is-ready' : ''}`}>
-      <div className="home-story">
-        <section className={`home-story-panel home-story-panel--verse${activePanels.verse ? ' is-active' : ''}`} data-story-panel="verse">
-          <div className="home-story-content">
-            <VerseBlock story visible={introReady} dividerVisible={introReady} />
-          </div>
-        </section>
+      <div className="home-story" ref={storyRef}>
+        <div className={`home-story-stage${storyActive ? ' is-active' : ''}`}>
+          <AnimatePresence mode="wait">
+            <motion.section
+              key={currentCard.key}
+              className={`home-story-card ${currentCard.className}`}
+              initial={{ opacity: 0, y: '8vh', scale: currentCard.key === 'logo' ? 0.88 : 0.985 }}
+              animate={{ opacity: 1, y: '0vh', scale: currentCard.key === 'logo' ? 1.08 : 1 }}
+              exit={{ opacity: 0, y: '-8vh', scale: currentCard.key === 'logo' ? 0.94 : 0.985 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {currentCard.render(introReady)}
+            </motion.section>
+          </AnimatePresence>
+        </div>
 
-        <section className="home-story-logo-panel" ref={logoPanelRef}>
-          <div className="home-story-logo-sticky">
-            <img src={jlLogo} alt="J & L" className="home-story-logo" />
-          </div>
-        </section>
-
-        <section className={`home-story-panel home-story-panel--parents${activePanels.parents ? ' is-active' : ''}`} data-story-panel="parents">
-          <div className="home-story-content home-story-content--parents">
-            <ParentsBlock />
-          </div>
-        </section>
-
-        <section className={`home-story-panel home-story-panel--date${activePanels.date ? ' is-active' : ''}`} data-story-panel="date">
-          <div className="home-story-content">
-            <DateBlock />
-          </div>
-        </section>
-
-        <section className={`home-story-panel home-story-panel--final${activePanels.final ? ' is-active' : ''}`} data-story-panel="final">
-          <div className="home-story-content">
-            <ActionsBlock />
-          </div>
-        </section>
       </div>
     </section>
   );

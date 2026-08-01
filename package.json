@@ -6,24 +6,17 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-
-
   "engines": {
     "node": "24.x"
   },
-
-
   "main": "server.js",
-
-
   "scripts": {
-    "start": "node server.js",             
-    "build": "react-scripts build",      
-    "heroku-postbuild": "npm run build",   
+    "start": "node server.js",
+    "build": "react-scripts build",
+    "heroku-postbuild": "npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -33,6 +26,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "googleapis": "^144.0.0",
+    "motion": "^12.43.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.0",
@@ -40,19 +34,15 @@
     "react-transition-group": "^4.4.5",
     "web-vitals": "^2.1.4"
   },
-
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
   },
-
-
   "browserslist": {
     "production": [
       ">0.2%",

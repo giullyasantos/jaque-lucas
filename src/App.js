@@ -33,6 +33,26 @@ import coupleMobile from './media/HomeDesktop.png';
 import giftsDesktop from './media/giftsDesktop.webp';
 import giftsMobile from './media/giftsMobile.webp';
 
+const designAssetContext = require.context('./media/content/design-assets', false, /\.(png|jpe?g|webp)$/);
+const photoContext = require.context('./media/content/photos', true, /\.(png|jpe?g|webp)$/);
+
+const siteImages = [
+  coupleDesktop,
+  coupleMobile,
+  giftsDesktop,
+  giftsMobile,
+  flowerTopLg,
+  flowerTopMd,
+  flowerTopLgFlip,
+  flowerTopMdFlip,
+  flowerBotLg,
+  flowerBotMd,
+  flowerBotLgFlip,
+  flowerBotMdFlip,
+  ...designAssetContext.keys().map(designAssetContext),
+  ...photoContext.keys().map(photoContext),
+];
+
 // Helper function for preloading images
 const preloadImages = (images) => {
   const promises = images.map(
@@ -156,20 +176,34 @@ function Main({ introReady = true }) {
 
 function AppContent() {
   const location = useLocation();
-  const [showLoader, setShowLoader] = useState(() => location.pathname !== '/gifts');
   const isGiftsPage = location.pathname === '/gifts';
+  const [loaderAnimationDone, setLoaderAnimationDone] = useState(() => isGiftsPage);
+  const [assetsReady, setAssetsReady] = useState(() => isGiftsPage);
+  const showLoader = !isGiftsPage && (!loaderAnimationDone || !assetsReady);
 
   useEffect(() => {
-    // Warm up images in the background — loader sequence gives ample time
-    preloadImages([coupleDesktop, coupleMobile, giftsDesktop, giftsMobile]);
-  }, []);
+    if (isGiftsPage) {
+      setAssetsReady(true);
+      return;
+    }
+
+    let cancelled = false;
+    setAssetsReady(false);
+    preloadImages(siteImages).then(() => {
+      if (!cancelled) setAssetsReady(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isGiftsPage]);
 
   useEffect(() => {
-    if (!showLoader) return undefined;
+    if (loaderAnimationDone || isGiftsPage) return undefined;
 
-    const fallback = setTimeout(() => setShowLoader(false), 14500);
+    const fallback = setTimeout(() => setLoaderAnimationDone(true), 14500);
     return () => clearTimeout(fallback);
-  }, [showLoader]);
+  }, [isGiftsPage, loaderAnimationDone]);
 
   return (
     <>
@@ -178,7 +212,7 @@ function AppContent() {
       <LanguageProvider>
         <Main introReady={!showLoader || isGiftsPage} />
       </LanguageProvider>
-      {!isGiftsPage && showLoader && <Loading onDone={() => setShowLoader(false)} />}
+      {!isGiftsPage && showLoader && <Loading onDone={() => setLoaderAnimationDone(true)} />}
     </>
   );
 }

@@ -41,13 +41,20 @@ html {
   padding: 0;
   width: 100%;
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  overscroll-behavior: none;
+  scroll-behavior: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 h1 {
@@ -1082,37 +1089,48 @@ p {
   z-index: 1;
   color: var(--green-deep);
   text-align: center;
+  min-height: 760svh;
 }
 
 .home-container--story:not(.is-ready) .home-story {
   opacity: 0;
 }
 
-.home-story-panel {
+.home-story-stage {
+  position: fixed;
+  inset: 0;
+  height: 100svh;
   min-height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(150px, 18vw, 220px) 6%;
-  position: relative;
-}
-
-.home-story-content {
-  width: min(660px, 100%);
+  display: grid;
+  place-items: center;
+  padding: 0 6%;
+  overflow: hidden;
   opacity: 0;
-  transform: translateY(42px);
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 2;
 }
 
-.home-story-panel.is-active .home-story-content {
-  animation: storyPanelIn 1.05s var(--ease-out-expo) both;
+.home-story-stage.is-active {
+  opacity: 1;
 }
 
-.home-story-panel--verse .home-story-content {
-  transform: translateY(0);
+.home-story-card {
+  grid-area: 1 / 1;
+  width: min(660px, 100%);
+  pointer-events: none;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
-.home-story-panel--verse.is-active .home-story-content {
-  animation: storyVerseHold 1ms both;
+.home-story-card--final {
+  width: min(700px, 100%);
+}
+
+.home-story-card--final .home-icon-btn,
+.home-story-card--final .home-venue-card,
+.home-story-card--final .home-dresscode {
+  pointer-events: auto;
 }
 
 .home-story-verse {
@@ -1146,69 +1164,30 @@ p {
   opacity: 0;
 }
 
-.home-story-logo-panel {
-  height: 180svh;
-  position: relative;
-  --logo-scale: 0.72;
-  --logo-y: 24vh;
-  --logo-opacity: 0.25;
-}
-
-.home-story-logo-sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
 .home-story-logo {
   width: clamp(140px, 20vw, 240px);
   height: auto;
   display: block;
-  opacity: var(--logo-opacity);
-  transform: translate3d(0, var(--logo-y), 0) scale(var(--logo-scale));
-  transform-origin: center center;
-  filter: drop-shadow(0 24px 46px rgba(184, 14, 84, 0.12));
+  margin: 0 auto;
   backface-visibility: hidden;
-  will-change: transform, opacity;
 }
 
 .home-story-content--parents {
   width: min(620px, 100%);
 }
 
-.home-story-panel--parents .home-parents-card,
-.home-story-panel--date .home-date-block,
-.home-story-panel--final .home-venue-card {
+.home-story-card--parents .home-parents-card,
+.home-story-card--date .home-date-block,
+.home-story-card--final .home-venue-card {
   margin-bottom: 0;
 }
 
-.home-story-panel--date .home-invite {
+.home-story-card--date .home-invite {
   margin-bottom: 2.4rem;
 }
 
-.home-story-panel--final .home-icons {
+.home-story-card--final .home-icons {
   margin-bottom: 2rem;
-}
-
-@keyframes storyPanelIn {
-  from {
-    opacity: 0;
-    transform: translateY(42px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes storyVerseHold {
-  from { opacity: 1; }
-  to { opacity: 1; }
 }
 
 @keyframes storyLineDraw {
@@ -1229,7 +1208,7 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-story-content,
+  .home-story-card,
   .home-story-logo,
   .home-story-divider span,
   .home-story-divider svg {
@@ -1239,13 +1218,23 @@ p {
     transition: none !important;
   }
 
-  .home-story-logo-panel {
-    height: 100svh;
+  .home-story {
+    min-height: auto;
+  }
+
+  .home-story-stage {
+    position: static;
+    min-height: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    opacity: 1;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .home-story-panel {
+  .home-story-stage {
     padding-left: 7%;
     padding-right: 7%;
   }
