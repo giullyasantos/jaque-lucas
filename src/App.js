@@ -20,14 +20,6 @@ import { LanguageProvider } from './components/languageContext';
 import Loading from './components/loader';
 
 // -- Media --
-import flowerTopLg      from './media/content/design-assets/flower-top-lg.png';
-import flowerTopMd      from './media/content/design-assets/flower-top-md.png';
-import flowerTopLgFlip  from './media/content/design-assets/flower-top-lg-flip.png';
-import flowerTopMdFlip  from './media/content/design-assets/flower-top-md-flip.png';
-import flowerBotLg      from './media/content/design-assets/flower-bottom-lg.png';
-import flowerBotMd      from './media/content/design-assets/flower-bottom-md.png';
-import flowerBotLgFlip  from './media/content/design-assets/flower-bottom-lg-flip.png';
-import flowerBotMdFlip  from './media/content/design-assets/flower-bottom-md-flip.png';
 import coupleDesktop from './media/HomeDesktop.png';
 import coupleMobile from './media/HomeDesktop.png';
 import giftsDesktop from './media/giftsDesktop.webp';
@@ -41,14 +33,6 @@ const siteImages = [
   coupleMobile,
   giftsDesktop,
   giftsMobile,
-  flowerTopLg,
-  flowerTopMd,
-  flowerTopLgFlip,
-  flowerTopMdFlip,
-  flowerBotLg,
-  flowerBotMd,
-  flowerBotLgFlip,
-  flowerBotMdFlip,
   ...designAssetContext.keys().map(designAssetContext),
   ...photoContext.keys().map(photoContext),
 ];
@@ -132,41 +116,13 @@ function BackgroundManager() {
   );
 }
 
-// -- Flower borders — fixed, always on top, never on loading screen --
-function FlowerBorders({ hideTop = false }) {
-  return (
-    <>
-      {!hideTop && (
-        <div className="flower-border flower-border--top" style={{
-          backgroundImage: [
-            `url(${flowerTopLg})`,
-            `url(${flowerTopMdFlip})`,
-            `url(${flowerTopLgFlip})`,
-            `url(${flowerTopMd})`,
-          ].join(', '),
-        }} />
-      )}
-      <div className="flower-border flower-border--bottom" style={{
-        backgroundImage: [
-          `url(${flowerBotLg})`,
-          `url(${flowerBotMdFlip})`,
-          `url(${flowerBotLgFlip})`,
-          `url(${flowerBotMd})`,
-        ].join(', '),
-      }} />
-    </>
-  );
-}
-
 // -- Main Component --
 function Main({ introReady = true }) {
   const location = useLocation();
-  const isGiftsPage = location.pathname === '/gifts';
 
   return (
     <>
       <BackgroundManager />
-      <FlowerBorders hideTop={isGiftsPage} />
       <NavBar />
       <TransitionGroup>
         <CSSTransition key={location.pathname} timeout={500} classNames="fade" unmountOnExit>

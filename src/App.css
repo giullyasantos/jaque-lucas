@@ -298,52 +298,6 @@ p {
   transition: opacity 0.5s ease-in;
 }
 
-/* ============================================
-   FLOWER BORDERS
-   ============================================ */
-
-.flower-border {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  pointer-events: none;
-  z-index: 100;
-  overflow: hidden;
-}
-
-.flower-border--top {
-  top: 0;
-  height: clamp(150px, 18vw, 220px);
-  /* 4 repeat-x layers offset from each other — gaps in one layer covered by others */
-  background-repeat: repeat-x, repeat-x, repeat-x, repeat-x;
-  background-size: auto 100%, auto 94%, auto 87%, auto 97%;
-  background-position: 0px top, 115px top, 58px top, 195px top;
-}
-
-.flower-border--bottom {
-  bottom: 0;
-  height: clamp(150px, 18vw, 220px);
-  background-repeat: repeat-x, repeat-x, repeat-x, repeat-x;
-  background-size: auto 100%, auto 93%, auto 88%, auto 96%;
-  background-position: 0px bottom, 130px bottom, 65px bottom, 205px bottom;
-}
-
-@media screen and (max-width: 768px) {
-  .flower-border--top {
-    height: clamp(70px, 18vw, 88px);
-    background-repeat: repeat-x, no-repeat, no-repeat, no-repeat;
-    background-size: 230px auto, 0 0, 0 0, 0 0;
-    background-position: center top, center top, center top, center top;
-  }
-
-  .flower-border--bottom {
-    height: clamp(92px, 24vw, 116px);
-    background-size: 250px auto, 0 0, 0 0, 0 0;
-    background-repeat: repeat-x, no-repeat, no-repeat, no-repeat;
-    background-position: center bottom, center bottom, center bottom, center bottom;
-  }
-}
-
 .fade-out {
   opacity: 0;
   transition: opacity 0.4s ease-out;
