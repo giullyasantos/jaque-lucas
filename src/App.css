@@ -1003,33 +1003,6 @@ p {
   transform: translate3d(0, clamp(24px, 4vh, 42px), 0);
 }
 
-.home-section--blessing::before,
-.home-section--details::after {
-  content: "";
-  position: absolute;
-  width: clamp(105px, 13vw, 170px);
-  aspect-ratio: 1;
-  background-image: url('./media/content/design-assets/side-of-flowers.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.home-section--blessing::before {
-  top: clamp(88px, 11vw, 140px);
-  left: clamp(-86px, -7vw, -38px);
-  opacity: 0.5;
-  transform: rotate(-8deg);
-}
-
-.home-section--details::after {
-  top: clamp(120px, 15vw, 210px);
-  right: clamp(-96px, -8vw, -42px);
-  opacity: 0.42;
-  transform: scaleX(-1) rotate(-6deg);
-}
-
 .home-section-divider {
   width: 100%;
   margin: 2.6rem 0 3rem;
@@ -1465,20 +1438,6 @@ p {
 
   .home-hero-inner {
     transform: translate3d(0, 28px, 0);
-  }
-
-  .home-section--blessing::before {
-    top: 118px;
-    left: -42px;
-    width: 92px;
-    opacity: 0.42;
-  }
-
-  .home-section--details::after {
-    top: 112px;
-    right: -48px;
-    width: 102px;
-    opacity: 0.34;
   }
 
   .home-couple {
