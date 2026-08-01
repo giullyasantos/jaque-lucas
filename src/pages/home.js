@@ -27,28 +27,6 @@ const Divider = ({ className = '', isVisible = true }) => (
   </div>
 );
 
-const ParentsBlock = ({ blessingRef, blessingVisible = true, parentsRef, parentsVisible = true }) => (
-  <>
-    <p ref={blessingRef} className={`home-blessing reveal-up${blessingVisible ? ' is-visible' : ''}`}>
-      Com a bênção de Deus e de seus pais
-    </p>
-
-    <div ref={parentsRef} className={`home-parents-card reveal-unfold${parentsVisible ? ' is-visible' : ''}`}>
-      <div className="home-parents">
-        <div className={`home-parents-col reveal-up${parentsVisible ? ' is-visible' : ''}`} style={{ '--stagger': '0' }}>
-          <span className="home-parent-name">Joacir Pereira</span>
-          <span className="home-parent-name">Iraildes Pereira</span>
-        </div>
-        <div className="home-parents-divider" />
-        <div className={`home-parents-col reveal-up${parentsVisible ? ' is-visible' : ''}`} style={{ '--stagger': '1' }}>
-          <span className="home-parent-name home-parent-name--left">Eduardo Lopes de Oliveira</span>
-          <span className="home-parent-name home-parent-name--left">Jeane da Silva</span>
-        </div>
-      </div>
-    </div>
-  </>
-);
-
 const DateBlock = () => (
   <>
     <h1 className="home-couple">Jaqueline & Lucas</h1>
@@ -151,9 +129,6 @@ const ActionsBlock = ({ dresscodeRef, dresscodeVisible = true, iconsRef, iconsVi
 );
 
 const HomeClassic = () => {
-  const [blessingRef, blessingVisible] = useReveal(0.3);
-  const [parentsRef,  parentsVisible]  = useReveal(0.15);
-  const [blessingSectionRef, blessingSectionVisible] = useReveal(0.18);
   const [heroSectionRef, heroSectionVisible] = useReveal(0.18);
   const [detailsSectionRef,  detailsSectionVisible]  = useReveal(0.18);
   const [dresscodeRef,dresscodeVisible]= useReveal(0.3);
@@ -163,18 +138,6 @@ const HomeClassic = () => {
   return (
     <section className="home-container fade-in">
       <div className="home-content">
-        <section
-          ref={blessingSectionRef}
-          className={`home-section home-section--blessing home-section--reveal reveal-up${blessingSectionVisible ? ' is-visible' : ''}`}
-        >
-          <ParentsBlock
-            blessingRef={blessingRef}
-            blessingVisible={blessingVisible}
-            parentsRef={parentsRef}
-            parentsVisible={parentsVisible}
-          />
-        </section>
-
         <section
           ref={heroSectionRef}
           className={`home-section home-section--hero home-section--reveal reveal-up${heroSectionVisible ? ' is-visible' : ''}`}

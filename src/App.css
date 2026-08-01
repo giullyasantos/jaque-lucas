@@ -125,6 +125,22 @@ p {
   to   { opacity: 0; transform: scale(0.95); }
 }
 
+@keyframes ld-letter-pop {
+  0%   { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.96); }
+  70%  { opacity: 1; transform: translate3d(0, -2px, 0) scale(1.01); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes ld-blessing-in {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes ld-load-scan {
+  from { transform: translate3d(-120%, 0, 0); }
+  to   { transform: translate3d(260%, 0, 0); }
+}
+
 @keyframes ld-bar-grow {
   from { width: 0%; }
   to   { width: 100%; }
@@ -166,8 +182,10 @@ p {
   will-change: opacity, transform;
 }
 
-/* ── Verse + bar ── */
-.ld-verse-wrap {
+/* ── Logo, verse, blessing ── */
+.ld-logo-wrap,
+.ld-verse-wrap,
+.ld-blessing-wrap {
   position: absolute;
   z-index: 10;
   display: flex;
@@ -177,9 +195,52 @@ p {
   animation: ld-in 0.9s var(--ease-out-expo) both;
 }
 
+.ld-logo-wrap {
+  gap: 24px;
+}
+
+.ld-logo-wrap--out,
 .ld-verse-wrap--out {
   animation: ld-out ease forwards;
   pointer-events: none;
+}
+
+.ld-logo-img {
+  width: clamp(130px, 22vw, 190px);
+  height: auto;
+  display: block;
+}
+
+.ld-load-track {
+  width: clamp(130px, 22vw, 190px);
+  height: 1px;
+  background: var(--cream-dark);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ld-load-fill {
+  height: 100%;
+  width: 6%;
+  background: var(--green-mid);
+  border-radius: 2px;
+  transition: width 0.35s var(--ease-out-expo);
+}
+
+.ld-load-fill--indeterminate {
+  width: 40%;
+  animation: ld-load-scan 1.15s var(--ease-in-out) infinite;
+  transition: none;
+}
+
+.ld-load-caption {
+  margin: -6px 0 0;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  color: var(--green-mid);
+  opacity: 0.7;
 }
 
 .ld-verse {
@@ -192,6 +253,71 @@ p {
   text-align: center;
   color: var(--green-mid);
   letter-spacing: 0.03em;
+}
+
+.ld-verse-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0) scale(0.96);
+  animation: ld-letter-pop 0.74s var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--i) * 28ms);
+  will-change: opacity, transform;
+}
+
+.ld-blessing-wrap {
+  width: min(720px, 84vw);
+  gap: 24px;
+  animation: ld-blessing-in 1s var(--ease-out-expo) both;
+}
+
+.ld-blessing-wrap--out {
+  animation: ld-out ease forwards;
+  pointer-events: none;
+}
+
+.ld-blessing-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.82rem, 2vw, 1rem);
+  letter-spacing: 0.22em;
+  line-height: 1.9;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--green-mid);
+}
+
+.ld-blessing-card {
+  width: min(560px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: center;
+  gap: 0 1.4rem;
+  padding: clamp(1.4rem, 4vw, 2.2rem);
+  background: rgba(251, 248, 245, 0.72);
+  border: 0.75px solid rgba(184, 14, 84, 0.22);
+  box-shadow: 0 18px 60px rgba(184, 14, 83, 0.12);
+}
+
+.ld-blessing-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.92rem, 2.4vw, 1.08rem);
+  line-height: 1.7;
+  text-align: right;
+  color: var(--green-deep);
+}
+
+.ld-blessing-col--left {
+  text-align: left;
+}
+
+.ld-blessing-divider {
+  width: 1px;
+  height: 100%;
+  min-height: 86px;
+  background: rgba(184, 14, 84, 0.2);
 }
 
 .ld-bar-track {
@@ -254,13 +380,56 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ld-verse-wrap, .ld-verse-wrap--out,
+  .ld-logo-wrap, .ld-logo-wrap--out,
+  .ld-load-fill--indeterminate,
+  .ld-verse-wrap, .ld-verse-wrap--out, .ld-verse-letter,
+  .ld-blessing-wrap, .ld-blessing-wrap--out,
   .ld-pol--on, .ld-screen--exit, .ld-bg-reveal,
   .app-shell, .background-container--previous {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ld-logo-wrap {
+    gap: 20px;
+  }
+
+  .ld-logo-img {
+    width: clamp(138px, 42vw, 170px);
+  }
+
+  .ld-load-track {
+    width: clamp(150px, 46vw, 190px);
+  }
+
+  .ld-verse {
+    width: min(310px, 84vw);
+    font-size: clamp(1.25rem, 6vw, 1.55rem);
+    line-height: 1.9;
+  }
+
+  .ld-blessing-wrap {
+    width: min(330px, 86vw);
+    gap: 18px;
+  }
+
+  .ld-blessing-title {
+    font-size: 0.82rem;
+    line-height: 1.8;
+  }
+
+  .ld-blessing-card {
+    gap: 0 0.85rem;
+    padding: 1.3rem 0.95rem;
+  }
+
+  .ld-blessing-col {
+    font-size: 0.82rem;
+    line-height: 1.85;
   }
 }
 

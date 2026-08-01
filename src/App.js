@@ -38,22 +38,34 @@ const siteImages = [
 ];
 
 // Helper function for preloading images
-const preloadImages = (images) => {
-  const promises = Array.from(new Set(images)).map(
+const preloadImages = (images, onProgress) => {
+  const uniqueImages = Array.from(new Set(images));
+  let loaded = 0;
+
+  const reportProgress = () => {
+    loaded += 1;
+    if (onProgress) onProgress(loaded, uniqueImages.length);
+  };
+
+  const promises = uniqueImages.map(
     (src) =>
       new Promise((resolve) => {
+        const finish = () => {
+          reportProgress();
+          resolve();
+        };
         const img = new Image();
         img.decoding = 'async';
         img.loading = 'eager';
         img.onload = () => {
           if (!img.decode) {
-            resolve();
+            finish();
             return;
           }
 
-          img.decode().catch(() => undefined).finally(resolve);
+          img.decode().catch(() => undefined).finally(finish);
         };
-        img.onerror = resolve;
+        img.onerror = finish;
         img.src = src;
       })
   );
@@ -179,17 +191,22 @@ function AppContent() {
   const isGiftsPage = location.pathname === '/gifts';
   const [loaderAnimationDone, setLoaderAnimationDone] = useState(() => isGiftsPage);
   const [assetsReady, setAssetsReady] = useState(() => isGiftsPage);
+  const [assetProgress, setAssetProgress] = useState(() => (isGiftsPage ? 1 : 0));
   const showLoader = !isGiftsPage && (!loaderAnimationDone || !assetsReady);
 
   useEffect(() => {
     if (isGiftsPage) {
       setAssetsReady(true);
+      setAssetProgress(1);
       return;
     }
 
     let cancelled = false;
     setAssetsReady(false);
-    preloadImages(siteImages).then(() => {
+    setAssetProgress(0);
+    preloadImages(siteImages, (loaded, total) => {
+      if (!cancelled) setAssetProgress(total ? loaded / total : 1);
+    }).then(() => {
       if (!cancelled) setAssetsReady(true);
     });
 
@@ -198,13 +215,6 @@ function AppContent() {
     };
   }, [isGiftsPage]);
 
-  useEffect(() => {
-    if (loaderAnimationDone || isGiftsPage) return undefined;
-
-    const fallback = setTimeout(() => setLoaderAnimationDone(true), 14500);
-    return () => clearTimeout(fallback);
-  }, [isGiftsPage, loaderAnimationDone]);
-
   return (
     <>
       <ScrollToTop />
@@ -212,7 +222,14 @@ function AppContent() {
       <LanguageProvider>
         <Main introReady={!showLoader || isGiftsPage} />
       </LanguageProvider>
-      {!isGiftsPage && showLoader && <Loading onDone={() => setLoaderAnimationDone(true)} />}
+      {!isGiftsPage && showLoader && (
+        <Loading
+          variant="intro"
+          assetsReady={assetsReady}
+          progress={assetProgress}
+          onDone={() => setLoaderAnimationDone(true)}
+        />
+      )}
     </>
   );
 }
