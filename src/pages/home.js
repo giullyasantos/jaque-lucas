@@ -249,7 +249,7 @@ const HomeStory = ({ introReady }) => {
         storyCards.length - 1,
         Math.max(0, Math.floor(progress * storyCards.length))
       );
-      const isStoryVisible = rect.top <= window.innerHeight && rect.bottom >= 0;
+      const isStoryVisible = rect.top <= window.innerHeight && rect.bottom > window.innerHeight;
 
       if (nextCard !== activeCardRef.current) {
         activeCardRef.current = nextCard;
@@ -292,10 +292,10 @@ const HomeStory = ({ introReady }) => {
             <motion.section
               key={currentCard.key}
               className={`home-story-card ${currentCard.className}`}
-              initial={{ opacity: 0, y: '8vh', scale: currentCard.key === 'logo' ? 0.88 : 0.985 }}
+              initial={{ opacity: 0, y: '7vh', scale: currentCard.key === 'logo' ? 0.88 : 0.985 }}
               animate={{ opacity: 1, y: '0vh', scale: currentCard.key === 'logo' ? 1.08 : 1 }}
-              exit={{ opacity: 0, y: '-8vh', scale: currentCard.key === 'logo' ? 0.94 : 0.985 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              exit={{ opacity: 0, y: '-7vh', scale: currentCard.key === 'logo' ? 0.94 : 0.985 }}
+              transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1] }}
             >
               {currentCard.render(introReady)}
             </motion.section>
