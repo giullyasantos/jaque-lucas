@@ -3,6 +3,8 @@ import Image2 from '../media/ringpic.webp';
 import axios from 'axios';
 import Loading from '../components/loader';
 
+const rsvpEndpoint = process.env.REACT_APP_RSVP_ENDPOINT || '/api/submit-rsvp';
+
 const RSVP = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [invitation, setInvitationValue] = useState('');
@@ -44,7 +46,7 @@ const RSVP = () => {
 
     try {
       setErrorMessage('');
-      await axios.post('https://dasidi-404122d2abe9.herokuapp.com/submit-rsvp', {
+      await axios.post(rsvpEndpoint, {
         firstName,
         lastName,
         people,

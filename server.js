@@ -1,10 +1,10 @@
 // Import required modules
 const express = require('express');
-const { google } = require('googleapis');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path'); // For serving static files
+const { appendRsvp } = require('./lib/rsvpSheets');
 
 const app = express();
 
@@ -39,48 +39,24 @@ app.use(cors({
   },
 }));
 
-// Load Google Sheets credentials
-let credentials;
-try {
-  credentials = JSON.parse(fs.readFileSync('./backend/rsvp.json'));
-  console.log('Google Sheets credentials loaded successfully');
-} catch (error) {
-  console.error('Error loading Google Sheets credentials:', error);
-}
-
-// Configure Google Sheets API client
-const auth = new google.auth.GoogleAuth({
-  credentials,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-const sheets = google.sheets({ version: 'v4', auth });
-
-const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1M7_jUQaxw9nM96Fd_DlYK7TZ_395MJ5eLCBGBj2MfHc';
-const SHEET_RANGE = process.env.SHEET_RANGE || 'Página1!A:E';
-
 // Endpoint to handle RSVP submissions
-app.post('/submit-rsvp', async (req, res) => {
+const handleRsvpSubmission = async (req, res) => {
   const { firstName, lastName, people, whoComing, allergies } = req.body;
 
   console.log('Received RSVP submission:', {  firstName, lastName, people, whoComing, allergies  });
 
   try {
-    // Append the RSVP data to the Google Sheet
-    const response = await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: SHEET_RANGE,
-      valueInputOption: 'USER_ENTERED',
-      requestBody: {
-        values: [[ firstName, lastName, people, whoComing, allergies ]],
-      },
-    });
+    const response = await appendRsvp({ firstName, lastName, people, whoComing, allergies });
     console.log('RSVP submitted to Google Sheets successfully:', response.data);
     res.status(200).send('RSVP submitted successfully!');
   } catch (error) {
     console.error('Error submitting RSVP to Google Sheets:', error);
     res.status(500).send('Error submitting RSVP');
   }
-});
+};
+
+app.post('/submit-rsvp', handleRsvpSubmission);
+app.post('/api/submit-rsvp', handleRsvpSubmission);
 
 const buildPath = path.join(__dirname, 'build');
 const publicPath = path.join(__dirname, 'public');
