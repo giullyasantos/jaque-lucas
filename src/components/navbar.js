@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import '../App.css';
 
@@ -9,13 +9,7 @@ const NavBar = () => {
     setIsOpen(!isOpen);
   };
 
-  const navigate = useNavigate();
   const location = useLocation();
-
-  const handleLogoClick = () => {
-    navigate('/'); // Logo redirects to the home page
-    if (isOpen) toggleMenu();
-  };
 
   const labels = {
     home: 'INÍCIO',
@@ -31,20 +25,6 @@ const NavBar = () => {
   return (
     <nav className={`navbar ${isOpen ? 'open' : ''} ${isRsvp ? 'navbar--rsvp' : ''}`}>
         <div className='topbar'>
-            <div>
-                <img
-                  id="ds-logo"
-                  src="/JL-flower-circle.png"
-                  alt="J&L Logo"
-                  width="65%"
-                  onClick={handleLogoClick}
-                  style={{
-                    cursor: 'pointer',
-                    paddingTop: '48px',
-                    paddingLeft: '8px'
-                  }}
-                />
-             </div>
              <div>
                 <button onClick={toggleMenu} className="menu-button">
                 {!isOpen ? (

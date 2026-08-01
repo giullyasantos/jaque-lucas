@@ -1,35 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
-import Loading from '../components/loader';
 
 import giftsDesktop from '../media/giftsDesktop.webp';
 import giftsMobile from '../media/giftsMobile.webp';
 
-const preloadImages = (images) => {
-  const promises = images.map(
-    (src) =>
-      new Promise((resolve) => {
-        const img = new Image();
-        img.onload = resolve;
-        img.onerror = resolve;
-        img.src = src;
-      })
-  );
-  return Promise.all(promises);
+const getGiftBackground = () => (
+  window.innerWidth <= 768 ? giftsMobile : giftsDesktop
+);
+
+const preloadImage = (src) => new Promise((resolve) => {
+  const img = new Image();
+  img.onload = resolve;
+  img.onerror = resolve;
+  img.src = src;
+});
+
+const waitForPaint = () => new Promise((resolve) => {
+  requestAnimationFrame(() => requestAnimationFrame(resolve));
+});
+
+const useGiftBackgroundReady = () => {
+  const [backgroundReady, setBackgroundReady] = useState(false);
+  const [backgroundSrc, setBackgroundSrc] = useState(getGiftBackground);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setBackgroundSrc(getGiftBackground());
+      setBackgroundReady(false);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    setBackgroundReady(false);
+    preloadImage(backgroundSrc)
+      .then(waitForPaint)
+      .then(() => {
+        if (!cancelled) setBackgroundReady(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [backgroundSrc]);
+
+  return backgroundReady;
 };
 
 const Gifts = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    preloadImages([giftsDesktop, giftsMobile]).then(() => setIsLoading(false));
-  }, []);
-
-  if (isLoading) return <Loading />;
+  const backgroundReady = useGiftBackgroundReady();
 
   return (
-    <div className="gifts fade-in">
+    <div className={`gifts ${backgroundReady ? 'gifts--ready' : 'gifts--loading'}`}>
+      <div className="gifts-loading-veil" aria-hidden="true" />
       <div className="description">
         <h1 style={{ fontSize: '4.5em' }}>PRESENTES</h1>
         <div className="gifts-rule" />

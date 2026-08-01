@@ -22,16 +22,12 @@ import Loading from './components/loader';
 // -- Media --
 import flowerTopLg      from './media/content/design-assets/flower-top-lg.png';
 import flowerTopMd      from './media/content/design-assets/flower-top-md.png';
-import flowerTopSm      from './media/content/design-assets/flower-top-sm.png';
 import flowerTopLgFlip  from './media/content/design-assets/flower-top-lg-flip.png';
 import flowerTopMdFlip  from './media/content/design-assets/flower-top-md-flip.png';
-import flowerTopSmFlip  from './media/content/design-assets/flower-top-sm-flip.png';
 import flowerBotLg      from './media/content/design-assets/flower-bottom-lg.png';
 import flowerBotMd      from './media/content/design-assets/flower-bottom-md.png';
-import flowerBotSm      from './media/content/design-assets/flower-bottom-sm.png';
 import flowerBotLgFlip  from './media/content/design-assets/flower-bottom-lg-flip.png';
 import flowerBotMdFlip  from './media/content/design-assets/flower-bottom-md-flip.png';
-import flowerBotSmFlip  from './media/content/design-assets/flower-bottom-sm-flip.png';
 import coupleDesktop from './media/HomeDesktop.png';
 import coupleMobile from './media/HomeDesktop.png';
 import giftsDesktop from './media/giftsDesktop.webp';
@@ -69,7 +65,7 @@ function BackgroundManager() {
 
   const getBackgroundForRoute = (path, mobile) => {
     if (path === '/rsvp') return mobile ? coupleMobile : coupleDesktop;
-    if (path === '/gifts') return giftsMobile;
+    if (path === '/gifts') return mobile ? giftsMobile : giftsDesktop;
     return mobile ? coupleMobile : coupleDesktop;
   };
 
@@ -108,17 +104,19 @@ function BackgroundManager() {
 }
 
 // -- Flower borders — fixed, always on top, never on loading screen --
-function FlowerBorders() {
+function FlowerBorders({ hideTop = false }) {
   return (
     <>
-      <div className="flower-border flower-border--top" style={{
-        backgroundImage: [
-          `url(${flowerTopLg})`,
-          `url(${flowerTopMdFlip})`,
-          `url(${flowerTopLgFlip})`,
-          `url(${flowerTopMd})`,
-        ].join(', '),
-      }} />
+      {!hideTop && (
+        <div className="flower-border flower-border--top" style={{
+          backgroundImage: [
+            `url(${flowerTopLg})`,
+            `url(${flowerTopMdFlip})`,
+            `url(${flowerTopLgFlip})`,
+            `url(${flowerTopMd})`,
+          ].join(', '),
+        }} />
+      )}
       <div className="flower-border flower-border--bottom" style={{
         backgroundImage: [
           `url(${flowerBotLg})`,
@@ -132,18 +130,19 @@ function FlowerBorders() {
 }
 
 // -- Main Component --
-function Main() {
+function Main({ introReady = true }) {
   const location = useLocation();
+  const isGiftsPage = location.pathname === '/gifts';
 
   return (
     <>
       <BackgroundManager />
-      <FlowerBorders />
+      <FlowerBorders hideTop={isGiftsPage} />
       <NavBar />
       <TransitionGroup>
         <CSSTransition key={location.pathname} timeout={500} classNames="fade" unmountOnExit>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home introReady={introReady} />} />
             <Route path="/gifts" element={<Gifts />} />
             <Route path="/ourstory" element={<OurStory />} />
             <Route path="/rsvp" element={<RSVP />} />
@@ -155,23 +154,40 @@ function Main() {
   );
 }
 
-// -- App Component --
-function App() {
-  const [showLoader, setShowLoader] = useState(true);
+function AppContent() {
+  const location = useLocation();
+  const [showLoader, setShowLoader] = useState(() => location.pathname !== '/gifts');
+  const isGiftsPage = location.pathname === '/gifts';
 
   useEffect(() => {
     // Warm up images in the background — loader sequence gives ample time
     preloadImages([coupleDesktop, coupleMobile, giftsDesktop, giftsMobile]);
   }, []);
 
+  useEffect(() => {
+    if (!showLoader) return undefined;
+
+    const fallback = setTimeout(() => setShowLoader(false), 14500);
+    return () => clearTimeout(fallback);
+  }, [showLoader]);
+
   return (
-    <Router>
+    <>
       <ScrollToTop />
       {/* Main is always mounted so the background is already painted when loader dissolves */}
       <LanguageProvider>
-        <Main />
+        <Main introReady={!showLoader || isGiftsPage} />
       </LanguageProvider>
-      {showLoader && <Loading onDone={() => setShowLoader(false)} />}
+      {!isGiftsPage && showLoader && <Loading onDone={() => setShowLoader(false)} />}
+    </>
+  );
+}
+
+// -- App Component --
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
