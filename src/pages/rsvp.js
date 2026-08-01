@@ -39,19 +39,23 @@ const RSVP = () => {
   };
 
   const handleFinalSubmit = async () => {
-    if (!firstName || !lastName || !people) {
-      setErrorMessage('Por favor, preencha todos os campos antes de enviar.');
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const guestCount = people.trim() || '0';
+
+    if (!trimmedFirstName || !trimmedLastName) {
+      setErrorMessage('Por favor, preencha seu nome e sobrenome antes de enviar.');
       return;
     }
 
     try {
       setErrorMessage('');
       await axios.post(rsvpEndpoint, {
-        firstName,
-        lastName,
-        people,
-        whoComing,
-        allergies,
+        firstName: trimmedFirstName,
+        lastName: trimmedLastName,
+        people: guestCount,
+        whoComing: whoComing.trim(),
+        allergies: allergies.trim(),
       });
       setIsSubmitted(true);
     } catch (error) {
@@ -107,7 +111,7 @@ const RSVP = () => {
                 </div>
                 <input
                   type="text"
-                  placeholder="Número de acompanhantes (ex: 2)"
+                  placeholder="Número de acompanhantes (opcional)"
                   value={people}
                   onChange={(e) => setPeople(e.target.value)}
                 />
