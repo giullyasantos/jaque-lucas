@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion } from 'motion/react';
 import { useReveal } from '../hooks/useReveal';
 import coupleDesktop from '../media/HomeDesktop.png';
 import coupleMobile from '../media/HomeDesktop.png';
@@ -184,129 +183,6 @@ const ActionsBlock = ({ dresscodeRef, dresscodeVisible = true, iconsRef, iconsVi
   </>
 );
 
-const storyCards = [
-  {
-    key: 'verse',
-    className: 'home-story-card--verse',
-    render: (introReady) => <VerseBlock story visible={introReady} dividerVisible={introReady} />,
-  },
-  {
-    key: 'logo',
-    className: 'home-story-card--logo',
-    render: () => <img src={jlLogo} alt="J & L" className="home-story-logo" />,
-  },
-  {
-    key: 'parents',
-    className: 'home-story-card--parents home-story-content--parents',
-    render: () => <ParentsBlock />,
-  },
-  {
-    key: 'date',
-    className: 'home-story-card--date',
-    render: () => <DateBlock />,
-  },
-  {
-    key: 'final',
-    className: 'home-story-card--final',
-    render: () => <ActionsBlock />,
-  },
-];
-
-const HomeStory = ({ introReady }) => {
-  const storyRef = useRef(null);
-  const stageRef = useRef(null);
-  const activeCardRef = useRef(0);
-  const storyActiveRef = useRef(false);
-  const [activeCard, setActiveCard] = useState(0);
-
-  useEffect(() => {
-    if (!introReady) return;
-
-    sessionStorage.setItem('homeStorySeen', 'true');
-  }, [introReady]);
-
-  useEffect(() => {
-    if (!introReady) return undefined;
-
-    window.history.scrollRestoration = 'manual';
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    return undefined;
-  }, [introReady]);
-
-  useEffect(() => {
-    if (!introReady) return undefined;
-
-    let frame = null;
-
-    const updateActiveCard = () => {
-      const story = storyRef.current;
-      if (!story) return;
-
-      const rect = story.getBoundingClientRect();
-      const totalScrollable = Math.max(1, rect.height - window.innerHeight);
-      const progress = Math.min(1, Math.max(0, -rect.top / totalScrollable));
-      const nextCard = Math.min(
-        storyCards.length - 1,
-        Math.max(0, Math.floor(progress * storyCards.length))
-      );
-      const isStoryVisible = rect.top <= window.innerHeight && rect.bottom > window.innerHeight;
-
-      if (nextCard !== activeCardRef.current) {
-        activeCardRef.current = nextCard;
-        setActiveCard(nextCard);
-      }
-
-      if (isStoryVisible !== storyActiveRef.current) {
-        storyActiveRef.current = isStoryVisible;
-        stageRef.current?.classList.toggle('is-active', isStoryVisible);
-      }
-    };
-
-    const scheduleUpdate = () => {
-      if (frame !== null) return;
-
-      frame = requestAnimationFrame(() => {
-        frame = null;
-        updateActiveCard();
-      });
-    };
-
-    updateActiveCard();
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleUpdate);
-
-    return () => {
-      if (frame !== null) cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', scheduleUpdate);
-      window.removeEventListener('resize', scheduleUpdate);
-    };
-  }, [introReady]);
-
-  const currentCard = storyCards[activeCard] || storyCards[0];
-
-  return (
-    <section className={`home-container home-container--story fade-in${introReady ? ' is-ready' : ''}`}>
-      <div className="home-story" ref={storyRef}>
-        <div className="home-story-stage" ref={stageRef}>
-          <AnimatePresence mode="wait">
-            <motion.section
-              key={currentCard.key}
-              className={`home-story-card ${currentCard.className}`}
-              initial={{ opacity: 0, y: '7vh', scale: currentCard.key === 'logo' ? 0.88 : 0.985 }}
-              animate={{ opacity: 1, y: '0vh', scale: currentCard.key === 'logo' ? 1.08 : 1 }}
-              exit={{ opacity: 0, y: '-7vh', scale: currentCard.key === 'logo' ? 0.94 : 0.985 }}
-              transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {currentCard.render(introReady)}
-            </motion.section>
-          </AnimatePresence>
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
 const HomeClassic = () => {
   const [verseRef,    verseVisible]    = useReveal(0.2);
   const [div1Ref,     div1Visible]     = useReveal(0.5);
@@ -354,23 +230,12 @@ const HomeClassic = () => {
   );
 };
 
-const Home = ({ introReady = true }) => {
-  const [showStory, setShowStory] = useState(() => sessionStorage.getItem('homeStorySeen') !== 'true');
-
+const Home = () => {
   useEffect(() => {
     preloadImages([coupleDesktop, coupleMobile]);
   }, []);
 
-  useEffect(() => {
-    const handleStorage = () => {
-      setShowStory(sessionStorage.getItem('homeStorySeen') !== 'true');
-    };
-
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
-
-  return showStory ? <HomeStory introReady={introReady} /> : <HomeClassic />;
+  return <HomeClassic />;
 };
 
 export default Home;

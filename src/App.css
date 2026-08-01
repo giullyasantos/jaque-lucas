@@ -324,6 +324,22 @@ p {
   background-position: 0px bottom, 130px bottom, 65px bottom, 205px bottom;
 }
 
+@media screen and (max-width: 768px) {
+  .flower-border--top {
+    height: clamp(70px, 18vw, 88px);
+    background-repeat: repeat-x, no-repeat, no-repeat, no-repeat;
+    background-size: 230px auto, 0 0, 0 0, 0 0;
+    background-position: center top, center top, center top, center top;
+  }
+
+  .flower-border--bottom {
+    height: clamp(92px, 24vw, 116px);
+    background-size: 250px auto, 0 0, 0 0, 0 0;
+    background-repeat: repeat-x, no-repeat, no-repeat, no-repeat;
+    background-position: center bottom, center bottom, center bottom, center bottom;
+  }
+}
+
 .fade-out {
   opacity: 0;
   transition: opacity 0.4s ease-out;
@@ -1075,175 +1091,6 @@ p {
     opacity: 0.7;
   }
 }
-
-/* First-visit home story */
-.home-container--story {
-  display: block;
-  min-height: 100vh;
-  padding: 0;
-  overflow: visible;
-}
-
-.home-story {
-  position: relative;
-  z-index: 1;
-  color: var(--green-deep);
-  text-align: center;
-  min-height: 760svh;
-}
-
-.home-container--story:not(.is-ready) .home-story {
-  opacity: 0;
-}
-
-.home-story-stage {
-  position: fixed;
-  inset: 0;
-  height: 100svh;
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  padding: 0 6%;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-  z-index: 2;
-}
-
-.home-story-stage.is-active {
-  opacity: 1;
-}
-
-.home-story-card {
-  grid-area: 1 / 1;
-  width: min(660px, 100%);
-  pointer-events: none;
-  backface-visibility: hidden;
-  will-change: transform, opacity;
-}
-
-.home-story-card--final {
-  width: min(700px, 100%);
-}
-
-.home-story-card--final .home-icon-btn,
-.home-story-card--final .home-venue-card,
-.home-story-card--final .home-dresscode {
-  pointer-events: auto;
-}
-
-.home-story-verse {
-  margin: 0;
-  font-size: clamp(1.05rem, 2.1vw, 1.45rem);
-}
-
-.home-story-divider {
-  margin-top: 3.25rem;
-  opacity: 0.55;
-}
-
-.home-story-divider span {
-  transform: scaleX(0);
-}
-
-.home-story-divider span:first-child {
-  transform-origin: right center;
-}
-
-.home-story-divider span:last-child {
-  transform-origin: left center;
-}
-
-.home-story-divider.is-visible span {
-  animation: storyLineDraw 0.85s var(--ease-out-expo) 1.45s both;
-}
-
-.home-story-divider.is-visible svg {
-  animation: storyDiamondIn 0.5s ease 1.9s both;
-  opacity: 0;
-}
-
-.home-story-logo {
-  width: clamp(140px, 20vw, 240px);
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  backface-visibility: hidden;
-}
-
-.home-story-content--parents {
-  width: min(620px, 100%);
-}
-
-.home-story-card--parents .home-parents-card,
-.home-story-card--date .home-date-block,
-.home-story-card--final .home-venue-card {
-  margin-bottom: 0;
-}
-
-.home-story-card--date .home-invite {
-  margin-bottom: 2.4rem;
-}
-
-.home-story-card--final .home-icons {
-  margin-bottom: 2rem;
-}
-
-@keyframes storyLineDraw {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-@keyframes storyDiamondIn {
-  from {
-    opacity: 0;
-    transform: scale(0.65) rotate(45deg);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-story-card,
-  .home-story-logo,
-  .home-story-divider span,
-  .home-story-divider svg {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
-  }
-
-  .home-story {
-    min-height: auto;
-  }
-
-  .home-story-stage {
-    position: static;
-    min-height: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 5rem;
-    opacity: 1;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .home-story-stage {
-    padding-left: 7%;
-    padding-right: 7%;
-  }
-
-  .home-story-logo {
-    width: clamp(128px, 42vw, 220px);
-  }
-}
-
 
 /* ============================================
    GIFTS PAGE
