@@ -69,7 +69,7 @@ const RSVP = () => {
         <div className="info">
           <div className="content">
             <h1>Confirmar Presença</h1>
-            <p className="rsvp-subtitle">Confirme sua presença</p>
+            <p className="rsvp-subtitle">Será uma alegria celebrar com você</p>
             <div className="rsvp-rule" />
             {!isAuthorized && (
               <div className="verify">

@@ -14,11 +14,19 @@ app.use(bodyParser.json());
 // Configure CORS to allow requests from specific origins
 const allowedOrigins = [
   'http://localhost:3000', // Local development frontend
+  'http://localhost:3001',
+  'https://jaque-lucas.vercel.app',
   'https://dasidi-404122d2abe9.herokuapp.com', 
   'https://www.damarisidiclei.love', 
   'http://www.damarisidiclei.love', 
   
 ];
+
+const envAllowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+allowedOrigins.push(...envAllowedOrigins);
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -47,8 +55,7 @@ const auth = new google.auth.GoogleAuth({
 });
 const sheets = google.sheets({ version: 'v4', auth });
 
-// Replace with your Google Sheets ID
-const SPREADSHEET_ID = '1mDlgX91sIhSxyW5iOILmz62v1tS20akmpPJcTAYe6ZQ';
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1mDlgX91sIhSxyW5iOILmz62v1tS20akmpPJcTAYe6ZQ';
 
 // Endpoint to handle RSVP submissions
 app.post('/submit-rsvp', async (req, res) => {
@@ -93,4 +100,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
