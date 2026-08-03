@@ -18,7 +18,7 @@ const POLAROIDS = [
 const MIN_LOGO_MS    = 1600;
 const LOGO_OUT_DUR   = 800;
 const VERSE_IN_DUR   = 2600;
-const VERSE_HOLD     = 2600;
+const VERSE_HOLD     = 6000;
 const VERSE_OUT_DUR  = 900;
 const FIRST_POL      = LOGO_OUT_DUR + VERSE_IN_DUR + VERSE_HOLD + VERSE_OUT_DUR + 500;
 // p1 and p2 get 1600ms each, p4 and ring get 1000ms
