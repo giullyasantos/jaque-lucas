@@ -38,7 +38,7 @@ const SCREEN_EXIT    = BLESSING_START + BLESSING_HOLD + BLESSING_OUT_DUR + 500;
 const EXIT_DUR       = 1400;
 // ─────────────────────────────────────────────────────────────
 
-const VERSE_TEXT = 'Deus uniu nossos caminhos e nós dois sabemos que uniremos nossa vida para sempre.';
+const VERSE_TEXT = 'Deus uniu nossos caminhos e nós dois sabemos que uniremos nossas vidas para sempre.';
 
 const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' }) => {
   const [phase, setPhase]          = useState('logo');
