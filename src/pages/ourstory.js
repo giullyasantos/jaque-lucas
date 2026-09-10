@@ -1,36 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../App.css';
-import Loading from '../components/loader';
 
-import photo1 from '../media/IMG_8636.webp';
-import photo2 from '../media/IMG_8639.webp';
-import photo3 from '../media/IMG_8642.webp';
-import photo4 from '../media/IMG_8643.webp';
-import photo5 from '../media/IMG_8646.webp';
-import photo6 from '../media/IMG_8647.webp';
-
-const preloadImages = (images) => {
-  const promises = images.map(
-    (src) =>
-      new Promise((resolve) => {
-        const img = new Image();
-        img.onload = resolve;
-        img.onerror = resolve;
-        img.src = src;
-      })
-  );
-  return Promise.all(promises);
-};
+import photo1 from '../media/content/photos/casa-noite-close-sorrindo-selfie.jpg';
+import photo2 from '../media/content/photos/condominio-area-externa-selfie-sorrindo.jpg';
+import photo3 from '../media/content/photos/restaurante-booth-rindo-juntos-candid.jpg';
+import photo4 from '../media/content/photos/pedras-noite-pedido-anel-selfie.jpg';
+import photo5 from '../media/content/photos/restaurante-booth-rindo-anel-candid.jpg';
 
 const OurStory = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    preloadImages([photo1, photo2, photo3, photo4, photo5, photo6]).then(() => setIsLoading(false));
-  }, []);
-
-  if (isLoading) return <Loading />;
-
   return (
     <div className="our-story-container">
       <section className="story-section">
@@ -38,34 +15,47 @@ const OurStory = () => {
         <h1 className="story-title">Nossa História</h1>
         <div className="story-rule" />
         <p className="story-text">
-          A nossa história teve um início um pouco atípico já que morávamos em cidades diferentes quando nos conhecemos e nossas famílias se aproximaram antes de pensarmos na possibilidade de um relacionamento, mas não demorou muito para o desejo surgir no nosso coração.
+          Nossa história começou de um jeito simples, quase por acaso, em 2022, quando nos conhecemos pelas redes sociais, entre Facebook e Instagram.
+        </p>
+        <p className="story-text">
+          No começo, eram apenas conversas despretensiosas sobre séries, filmes, coisas que gostávamos e aquelas pequenas descobertas que, sem perceber, foram criando uma conexão cada vez maior entre nós. Até que decidimos transformar as conversas virtuais em um encontro de verdade.
         </p>
         <div className="photo-gallery">
-          <img src={photo1} alt="Our Story 1" className="story-photo" />
-          <img src={photo2} alt="Our Story 2" className="story-photo" />
-          <img src={photo3} alt="Our Story 3" className="story-photo" />
+          <img src={photo1} alt="Nossa História 1" className="story-photo" />
+          <img src={photo2} alt="Nossa História 2" className="story-photo" />
+          <img src={photo3} alt="Nossa História 3" className="story-photo" />
         </div>
       </section>
 
       <section className="story-section">
-        <p className="story-eyebrow">O que está por vir</p>
-        <h1 className="story-title">O Futuro</h1>
+        <p className="story-eyebrow">O primeiro encontro</p>
+        <h1 className="story-title">Quando tudo mudou</h1>
         <div className="story-rule" />
         <p className="story-text">
-          Daí em diante nos tornamos melhores amigos, confidentes, noivos e em breve marido e mulher.
+          E foi naquele primeiro encontro que algo mudou. O que começou como uma conversa pela internet se tornou a história mais bonita das nossas vidas. Depois daquele dia, não nos separamos mais. Vieram os momentos juntos, as risadas, os planos, os sonhos e a certeza de que havíamos encontrado um no outro um lugar para chamar de lar.
+        </p>
+        <p className="story-text">
+          Em 2024, demos mais um passo nessa história e ficamos noivos, prometendo continuar escolhendo um ao outro todos os dias.
         </p>
         <div className="photo-gallery2">
-          <img src={photo5} alt="Our Story 4" className="story-photo" />
-          <img src={photo6} alt="Our Story 5" className="story-photo" />
+          <img src={photo4} alt="Nossa História 4" className="story-photo" />
+          <img src={photo5} alt="Nossa História 5" className="story-photo" />
         </div>
       </section>
 
-      <section className="scripture-section">
-        <span className="scripture-ornament">✦ ✦ ✦</span>
-        <p className="scripture-text">
-          "Para que todos vejam e saibam, considerem e entendam que a mão do Senhor fez isso."
+      <section className="story-section">
+        <p className="story-eyebrow">2026</p>
+        <h1 className="story-title">Para sempre</h1>
+        <div className="story-rule" />
+        <p className="story-text">
+          Agora, estamos prestes a viver um dos capítulos mais importantes da nossa história: o nosso casamento.
         </p>
-        <p className="scripture-reference">— Isaías 41:20</p>
+        <p className="story-text">
+          De uma simples conversa sobre filmes e séries nasceu um amor que atravessou a tela, ganhou a vida real e se transformou em um para sempre.
+        </p>
+        <p className="story-text story-text--closing">
+          E talvez essa seja a parte mais bonita da nossa história: nós não estávamos procurando um ao outro, mas a vida, de alguma forma, fez questão de nos encontrar. ❤️
+        </p>
       </section>
     </div>
   );

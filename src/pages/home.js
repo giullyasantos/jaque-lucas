@@ -91,6 +91,14 @@ const ActionsBlock = ({ dresscodeRef, dresscodeVisible = true, iconsRef, iconsVi
         </svg>
         <span>Confirmar Presença</span>
       </Link>
+      <Link to="/ourstory" className="home-icon-btn reveal-up" style={{ '--stagger': '3' }}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          <path d="M9 7h6M9 11h4" />
+        </svg>
+        <span>Nossa História</span>
+      </Link>
     </div>
 
     <a ref={venueRef} href="https://maps.app.goo.gl/55dh8DAiu1dQKvf4A" target="_blank" rel="noopener noreferrer"

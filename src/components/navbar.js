@@ -13,6 +13,7 @@ const NavBar = () => {
 
   const labels = {
     home: 'INÍCIO',
+    ourstory: 'NOSSA HISTÓRIA',
     gifts: 'PRESENTES',
     location: 'LOCALIZAÇÃO',
     rsvp: 'PRESENÇA',
@@ -22,8 +23,10 @@ const NavBar = () => {
   const isOurStory = location.pathname === '/ourstory';
   const isRsvp = location.pathname === '/rsvp';
 
+  const isCompact = isRsvp || isOurStory || location.pathname === '/gifts';
+
   return (
-    <nav className={`navbar ${isOpen ? 'open' : ''} ${isRsvp ? 'navbar--rsvp' : ''}`}>
+    <nav className={`navbar ${isOpen ? 'open' : ''} ${isRsvp ? 'navbar--rsvp' : ''} ${isCompact ? 'navbar--compact' : ''}`}>
         <div className='topbar'>
              <div>
                 <button onClick={toggleMenu} className="menu-button">
@@ -49,6 +52,7 @@ opacity="1.000000" stroke="none" d=" M261.250000,842.250000   C217.302185,886.19
         </div>
         <ul className={`menu ${isOpen ? 'open' : ''}`}>
           <li><Link to="/" onClick={toggleMenu}>{labels.home}</Link></li>
+          <li><Link to="/ourstory" onClick={toggleMenu}>{labels.ourstory}</Link></li>
           <li><Link to="/gifts" onClick={toggleMenu}>{labels.gifts}</Link></li>
           <li><Link to="/rsvp" onClick={toggleMenu}>{labels.rsvp}</Link></li>
           <li><Link to="https://maps.app.goo.gl/55dh8DAiu1dQKvf4A" target="_blank" rel="noopener noreferrer" onClick={toggleMenu}>{labels.location}</Link></li>

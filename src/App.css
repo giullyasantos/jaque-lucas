@@ -710,6 +710,11 @@ p {
   padding-top: clamp(70px, 9vw, 120px);
 }
 
+.navbar--compact .topbar {
+  height: 80px;
+  padding-top: 0;
+}
+
 /* Icons */
 #menu {
   height: 90px;
@@ -2032,7 +2037,7 @@ p {
   color: var(--green-mid);
   font-family: var(--font-body);
   max-width: 960px;
-  margin: 160px auto 0;
+  margin: 120px auto 80px;
   box-shadow: 0 0 80px rgba(184, 14, 83, 0.10);
 }
 
@@ -2075,6 +2080,12 @@ p {
   margin: 0 auto 2.5rem;
   max-width: 640px;
   font-style: italic;
+}
+
+.story-text--closing {
+  font-size: 1.25em;
+  color: var(--green-deep);
+  margin-bottom: 0;
 }
 
 /* Photo gallery */
@@ -2147,7 +2158,7 @@ p {
 
 @media screen and (max-width: 768px) {
   .our-story-container {
-    margin-top: 120px;
+    margin-top: 100px;
   }
 
   .story-section {
