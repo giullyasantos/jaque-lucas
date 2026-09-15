@@ -2112,6 +2112,13 @@ p {
   filter: saturate(0.88);
 }
 
+.story-photo--portrait {
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center center;
+}
+
 .story-photo:hover {
   transform: scale(1.04);
   filter: saturate(1.05);

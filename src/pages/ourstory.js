@@ -3,9 +3,9 @@ import '../App.css';
 
 import photo1 from '../media/content/photos/interior-parede-amarela-selfie.jpg';
 import photo2 from '../media/content/photos/condominio-area-externa-selfie-sorrindo.jpg';
-import photo3 from '../media/content/photos/restaurante-booth-rindo-juntos-candid.jpg';
+import photo3 from '../media/content/photos/museu-ipiranga-fonte-em-pe-retrato.jpg';
 import photo4 from '../media/content/photos/pedras-noite-pedido-anel-selfie.jpg';
-import photo5 from '../media/content/photos/museu-ipiranga-fonte-em-pe-retrato.jpg';
+import photo5 from '../media/content/photos/restaurante-booth-rindo-juntos-candid.jpg';
 
 const HeartAnimation = () => (
   <div className="story-heart-wrap" aria-hidden="true">
@@ -33,7 +33,7 @@ const OurStory = () => {
           No começo, eram apenas conversas despretensiosas sobre séries, filmes, coisas que gostávamos e aquelas pequenas descobertas que, sem perceber, foram criando uma conexão cada vez maior entre nós. Até que decidimos transformar as conversas virtuais em um encontro de verdade.
         </p>
         <div className="photo-gallery">
-          <img src={photo1} alt="Nossa História 1" className="story-photo" />
+          <img src={photo1} alt="Nossa História 1" className="story-photo story-photo--portrait" />
           <img src={photo2} alt="Nossa História 2" className="story-photo" />
           <img src={photo3} alt="Nossa História 3" className="story-photo" />
         </div>
