@@ -2156,6 +2156,52 @@ p {
   margin: 0.5rem 0 0;
 }
 
+.story-heart-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  animation: heart-breathe 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.story-heart-svg {
+  width: 52px;
+  height: auto;
+  overflow: visible;
+  display: block;
+}
+
+.story-heart-path {
+  fill: var(--green-deep);
+  stroke: var(--green-mid);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  fill-opacity: 0;
+  animation: heart-draw 6s ease-in-out infinite;
+}
+
+@keyframes heart-draw {
+  0%   { stroke-dashoffset: 1; fill-opacity: 0; opacity: 1; }
+  32%  { stroke-dashoffset: 0; fill-opacity: 0; opacity: 1; }
+  52%  { stroke-dashoffset: 0; fill-opacity: 1; opacity: 1; }
+  72%  { stroke-dashoffset: 0; fill-opacity: 1; opacity: 1; }
+  86%  { stroke-dashoffset: 0; fill-opacity: 0; opacity: 0; }
+  87%  { stroke-dashoffset: 1; fill-opacity: 0; opacity: 0; }
+  100% { stroke-dashoffset: 1; fill-opacity: 0; opacity: 0; }
+}
+
+@keyframes heart-breathe {
+  0%, 50% { transform: scale(1); }
+  62%      { transform: scale(1.14); }
+  72%      { transform: scale(1); }
+  78%      { transform: scale(1.06); }
+  85%      { transform: scale(1); }
+  100%     { transform: scale(1); }
+}
+
 @media screen and (max-width: 768px) {
   .our-story-container {
     margin-top: 100px;
@@ -2175,6 +2221,11 @@ p {
 
   .story-photo {
     height: 240px;
+  }
+
+  .photo-gallery .story-photo:first-child,
+  .photo-gallery2 .story-photo:last-child {
+    object-position: center top;
   }
 
   .scripture-section {

@@ -7,6 +7,18 @@ import photo3 from '../media/content/photos/restaurante-booth-rindo-juntos-candi
 import photo4 from '../media/content/photos/pedras-noite-pedido-anel-selfie.jpg';
 import photo5 from '../media/content/photos/restaurante-booth-rindo-anel-candid.jpg';
 
+const HeartAnimation = () => (
+  <div className="story-heart-wrap" aria-hidden="true">
+    <svg viewBox="0 0 100 90" className="story-heart-svg">
+      <path
+        pathLength="1"
+        className="story-heart-path"
+        d="M50 85 C10 65 0 45 0 28 C0 12 12 0 28 0 C37 0 47 5 50 14 C53 5 63 0 72 0 C88 0 100 12 100 28 C100 45 90 65 50 85Z"
+      />
+    </svg>
+  </div>
+);
+
 const OurStory = () => {
   return (
     <div className="our-story-container">
@@ -54,8 +66,9 @@ const OurStory = () => {
           De uma simples conversa sobre filmes e séries nasceu um amor que atravessou a tela, ganhou a vida real e se transformou em um para sempre.
         </p>
         <p className="story-text story-text--closing">
-          E talvez essa seja a parte mais bonita da nossa história: nós não estávamos procurando um ao outro, mas a vida, de alguma forma, fez questão de nos encontrar. ❤️
+          E talvez essa seja a parte mais bonita da nossa história: nós não estávamos procurando um ao outro, mas a vida, de alguma forma, fez questão de nos encontrar.
         </p>
+        <HeartAnimation />
       </section>
     </div>
   );
