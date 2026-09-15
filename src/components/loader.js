@@ -109,15 +109,29 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
           style={verseFadingOut ? { animationDuration: `${VERSE_OUT_DUR}ms` } : undefined}
         >
           <p className="ld-verse">
-            {VERSE_TEXT.split('').map((char, index) => (
-              <span
-                key={`${char}-${index}`}
-                className="ld-verse-letter"
-                style={{ '--i': index }}
-              >
-                {char === ' ' ? '\u00a0' : char}
-              </span>
-            ))}
+            {VERSE_TEXT.split(' ').reduce((acc, word, wi) => {
+              const prevChars = acc.charCount;
+              const wordSpan = (
+                <span key={wi} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                  {word.split('').map((char, ci) => (
+                    <span
+                      key={ci}
+                      className="ld-verse-letter"
+                      style={{ '--i': prevChars + ci }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              );
+              const space = wi < VERSE_TEXT.split(' ').length - 1
+                ? <span key={`sp-${wi}`} className="ld-verse-letter" style={{ '--i': prevChars + word.length }}>{'\u00a0'}</span>
+                : null;
+              return {
+                charCount: prevChars + word.length + (space ? 1 : 0),
+                nodes: [...acc.nodes, wordSpan, space],
+              };
+            }, { charCount: 0, nodes: [] }).nodes}
           </p>
         </div>
       )}
