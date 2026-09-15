@@ -1,11 +1,11 @@
 import React from 'react';
 import '../App.css';
 
-import photo1 from '../media/content/photos/casa-noite-close-sorrindo-selfie.jpg';
+import photo1 from '../media/content/photos/interior-parede-amarela-selfie.jpg';
 import photo2 from '../media/content/photos/condominio-area-externa-selfie-sorrindo.jpg';
 import photo3 from '../media/content/photos/restaurante-booth-rindo-juntos-candid.jpg';
 import photo4 from '../media/content/photos/pedras-noite-pedido-anel-selfie.jpg';
-import photo5 from '../media/content/photos/restaurante-booth-rindo-anel-candid.jpg';
+import photo5 from '../media/content/photos/museu-ipiranga-fonte-em-pe-retrato.jpg';
 
 const HeartAnimation = () => (
   <div className="story-heart-wrap" aria-hidden="true">
