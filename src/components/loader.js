@@ -65,6 +65,18 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
     return () => clearTimeout(timer);
   }, []);
 
+  // Do not rely exclusively on animationend to release the page. That event
+  // never fires when the exit animation is disabled by reduced-motion styles.
+  useEffect(() => {
+    if (phase !== 'exit' || !onDone) return undefined;
+
+    const prefersReducedMotion = window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timer = setTimeout(onDone, prefersReducedMotion ? 0 : EXIT_DUR + 100);
+
+    return () => clearTimeout(timer);
+  }, [onDone, phase]);
+
   useEffect(() => {
     if (!isIntro || !assetsReady || !minLogoDone) return undefined;
 
