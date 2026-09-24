@@ -136,9 +136,9 @@ p {
 }
 
 @keyframes menu-icon-gold-pulse {
-  0%, 34%, 100% { fill: #8a0a3d; }
-  14%      { fill: var(--gold-main); }
-  20%      { fill: var(--gold-glint); }
+  0%, 34%, 100% { stroke: #8a0a3d; }
+  14%      { stroke: var(--gold-main); }
+  20%      { stroke: var(--gold-glint); }
 }
 
 @keyframes menu-gold-sweep {
@@ -931,12 +931,31 @@ p {
   transition: 0.3s ease;
 }
 
-#close {
-  height: 50px;
-  width: 50px;
-  margin-top: 20px;
-  transition: 0.3s ease;
-  cursor: pointer;
+#menu path {
+  fill: none;
+  stroke: var(--green-deep);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: center;
+  transition: transform 480ms var(--ease-out-expo), stroke 300ms ease;
+  vector-effect: non-scaling-stroke;
+}
+
+.menu-line--top {
+  transform: scaleX(0.86);
+}
+
+.menu-line--bottom {
+  transform: scaleX(1);
+}
+
+#menu.is-open .menu-line--top {
+  transform: translateY(4px) rotate(45deg) scaleX(0.98);
+}
+
+#menu.is-open .menu-line--bottom {
+  transform: translateY(-4px) rotate(-45deg) scaleX(0.98);
 }
 
 /* Button */
@@ -1095,16 +1114,17 @@ p {
     --mobile-nav-height: calc(88px + env(safe-area-inset-top, 0px));
     left: 0;
     right: 0;
-    background-color: rgba(251, 248, 245, 0.82);
-    border-bottom: 1px solid rgba(138, 10, 61, 0.08);
-    box-shadow: 0 8px 24px rgba(82, 35, 52, 0.06);
-    -webkit-backdrop-filter: blur(14px) saturate(115%);
-    backdrop-filter: blur(14px) saturate(115%);
+    background: linear-gradient(
+      to bottom,
+      rgba(251, 248, 245, 0.32) 0%,
+      rgba(251, 248, 245, 0.12) 58%,
+      rgba(251, 248, 245, 0) 100%
+    );
   }
 
   .navbar.open {
     max-height: 100svh;
-    background-color: var(--cream);
+    background: var(--cream);
   }
 
   .topbar,
@@ -1115,25 +1135,36 @@ p {
   }
 
   #menu {
-    height: 64px;
-    width: 64px;
+    height: 40px;
+    width: 40px;
   }
 
   #menu path {
-    fill: var(--green-deep);
+    stroke: var(--green-deep);
   }
 
   .menu-button {
-    padding: 8px;
+    display: grid;
+    width: 52px;
+    height: 52px;
+    padding: 6px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(251, 248, 245, 0.58);
+    border: 1px solid rgba(138, 10, 61, 0.12);
+    box-shadow: 0 3px 14px rgba(82, 35, 52, 0.08);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
   }
 
-  #close {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 42px;
-    width: 42px;
-    margin-top: 0;
+  .navbar.open .menu-button {
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   .menu,
@@ -1274,6 +1305,10 @@ p {
   .home-venue-card.is-visible .home-venue-pin svg,
   .home-venue-pin::before {
     animation: none !important;
+  }
+
+  .menu-line {
+    transition: none !important;
   }
 
   .menu.open li a {
