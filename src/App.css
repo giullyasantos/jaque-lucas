@@ -709,7 +709,8 @@ p {
 
 .app-shell--ready {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  /* A transformed ancestor traps position: fixed children inside the page. */
+  transform: none;
 }
 
 .app-shell--waiting {
