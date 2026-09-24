@@ -22,7 +22,7 @@ const VERSE_HOLD     = 6000;
 const VERSE_OUT_DUR  = 900;
 const FIRST_POL      = LOGO_OUT_DUR + VERSE_IN_DUR + VERSE_HOLD + VERSE_OUT_DUR + 500;
 // p1 and p2 get 1600ms each, p4 and ring get 1000ms
-const POL_GAPS       = [1600, 1600, 1000];        // gap after card 0, 1, 2
+const POL_GAPS       = [1600, 1600, 1000];
 const POL_TIMES      = POLAROIDS.reduce((acc, _, i) => {
   if (i === 0) return [FIRST_POL];
   return [...acc, acc[i - 1] + POL_GAPS[i - 1]];
@@ -34,7 +34,10 @@ const POLS_OUT_DUR   = 1200;
 const BLESSING_START = POLS_OUT_START + POLS_OUT_DUR + 600;
 const BLESSING_HOLD  = 3200;
 const BLESSING_OUT_DUR = 900;
-const SCREEN_EXIT    = BLESSING_START + BLESSING_HOLD + BLESSING_OUT_DUR + 500;
+const READY_START    = BLESSING_START + BLESSING_HOLD + BLESSING_OUT_DUR;
+const READY_HOLD     = 2200;
+const READY_OUT_DUR  = 700;
+const SCREEN_EXIT    = READY_START + READY_HOLD + READY_OUT_DUR;
 const EXIT_DUR       = 1400;
 // ─────────────────────────────────────────────────────────────
 
@@ -44,7 +47,18 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
   const [phase, setPhase]          = useState('logo');
   const [visibleCount, setVisible] = useState(0);
   const [minLogoDone, setMinLogoDone] = useState(false);
+  const [presentationProgress, setPresentationProgress] = useState(0);
   const isIntro = variant === 'intro';
+
+  // Lock body scroll while the loading screen is visible
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setMinLogoDone(true), MIN_LOGO_MS);
@@ -55,6 +69,16 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
     if (!isIntro || !assetsReady || !minLogoDone) return undefined;
 
     const t = [];
+    let progressFrame;
+    const presentationStartedAt = performance.now();
+
+    const updatePresentationProgress = (now) => {
+      const nextProgress = Math.min((now - presentationStartedAt) / SCREEN_EXIT, 1);
+      setPresentationProgress(nextProgress);
+      if (nextProgress < 1) progressFrame = requestAnimationFrame(updatePresentationProgress);
+    };
+
+    progressFrame = requestAnimationFrame(updatePresentationProgress);
     t.push(setTimeout(() => setPhase('logo-out'), 0));
     t.push(setTimeout(() => setPhase('verse'), LOGO_OUT_DUR));
     t.push(setTimeout(() => setPhase('verse-out'), LOGO_OUT_DUR + VERSE_IN_DUR + VERSE_HOLD));
@@ -65,8 +89,13 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
     t.push(setTimeout(() => setPhase('pols-out'), POLS_OUT_START));
     t.push(setTimeout(() => setPhase('blessing'), BLESSING_START));
     t.push(setTimeout(() => setPhase('blessing-out'), BLESSING_START + BLESSING_HOLD));
+    t.push(setTimeout(() => setPhase('ready'), READY_START));
+    t.push(setTimeout(() => setPhase('ready-out'), READY_START + READY_HOLD));
     t.push(setTimeout(() => setPhase('exit'),     SCREEN_EXIT));
-    return () => t.forEach(clearTimeout);
+    return () => {
+      t.forEach(clearTimeout);
+      cancelAnimationFrame(progressFrame);
+    };
   }, [assetsReady, isIntro, minLogoDone]);
 
   const logoVisible     = phase === 'logo' || phase === 'logo-out' || !isIntro;
@@ -77,13 +106,31 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
   const showPols        = phase === 'polaroids' || phase === 'pols-out';
   const blessingVisible = phase === 'blessing' || phase === 'blessing-out';
   const blessingFading  = phase === 'blessing-out';
+  const readyVisible    = phase === 'ready' || phase === 'ready-out';
+  const readyFadingOut  = phase === 'ready-out';
   const safeProgress    = Math.max(0.06, Math.min(progress, 1));
+  const progressPercent = phase === 'ready' || phase === 'ready-out' || phase === 'exit'
+    ? 100
+    : Math.round(presentationProgress * 100);
+  const presentationLabel = phase === 'verse' || phase === 'verse-out'
+    ? 'Nossa história'
+    : phase === 'polaroids' || phase === 'pols-out'
+      ? 'Nossas memórias'
+      : phase === 'blessing' || phase === 'blessing-out'
+        ? 'Com nossas famílias'
+        : phase === 'ready' || phase === 'ready-out' || phase === 'exit'
+          ? 'Você está convidado'
+          : 'Abrindo o convite';
 
   return (
     <div
-      className={`ld-screen${phase === 'exit' ? ' ld-screen--exit' : ''}`}
+      className={`ld-screen notranslate${phase === 'exit' ? ' ld-screen--exit' : ''}`}
+      lang="pt-BR"
+      translate="no"
       style={phase === 'exit' ? { animationDuration: `${EXIT_DUR}ms` } : undefined}
-      onAnimationEnd={() => { if (phase === 'exit' && onDone) onDone(); }}
+      onAnimationEnd={(event) => {
+        if (event.target === event.currentTarget && phase === 'exit' && onDone) onDone();
+      }}
     >
       {logoVisible && (
         <div
@@ -125,7 +172,7 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
                 </span>
               );
               const space = wi < VERSE_TEXT.split(' ').length - 1
-                ? <span key={`sp-${wi}`} className="ld-verse-letter" style={{ '--i': prevChars + word.length }}>{'\u00a0'}</span>
+                ? <span key={`sp-${wi}`} className="ld-verse-letter" style={{ '--i': prevChars + word.length }}>{' '}</span>
                 : null;
               return {
                 charCount: prevChars + word.length + (space ? 1 : 0),
@@ -173,6 +220,41 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
               <span>Eduardo Lopes de Oliveira</span>
               <span>Jeane da Silva</span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {readyVisible && (
+        <div
+          className={`ld-ready-wrap${readyFadingOut ? ' ld-ready-wrap--out' : ''}`}
+          style={readyFadingOut ? { animationDuration: `${READY_OUT_DUR}ms` } : undefined}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="ld-ready-ornament" aria-hidden="true">✦</span>
+          <p className="ld-ready-title">Você está convidado</p>
+          <p className="ld-ready-copy">para celebrar esse momento conosco.</p>
+        </div>
+      )}
+
+      {isIntro && phase !== 'logo' && phase !== 'exit' && (
+        <div className={`ld-pres-progress${readyVisible ? ' ld-pres-progress--complete' : ''}${readyFadingOut ? ' ld-pres-progress--out' : ''}`}>
+          <div className="ld-pres-meta">
+            <span key={presentationLabel} className="ld-pres-label">{presentationLabel}</span>
+            <span className="ld-pres-value" aria-hidden="true">{progressPercent}%</span>
+          </div>
+          <div
+            className="ld-pres-bar"
+            role="progressbar"
+            aria-label="Progresso da apresentação"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow={progressPercent}
+          >
+            <div
+              className="ld-pres-fill"
+              style={{ transform: `scaleX(${progressPercent / 100})` }}
+            />
           </div>
         </div>
       )}

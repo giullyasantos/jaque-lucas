@@ -168,7 +168,7 @@ function Main({ introReady = true }) {
     <>
       <BackgroundManager />
       <div className={`app-shell${introReady ? ' app-shell--ready' : ' app-shell--waiting'}`}>
-        <NavBar />
+        <NavBar introReady={introReady} />
         <TransitionGroup>
           <CSSTransition key={location.pathname} timeout={500} classNames="fade" unmountOnExit>
             <Routes>

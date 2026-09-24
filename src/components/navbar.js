@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import '../App.css';
 
-const NavBar = () => {
+const NavBar = ({ introReady = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -26,10 +26,16 @@ const NavBar = () => {
   const isCompact = isRsvp || isOurStory || location.pathname === '/gifts';
 
   return (
-    <nav className={`navbar ${isOpen ? 'open' : ''} ${isRsvp ? 'navbar--rsvp' : ''} ${isCompact ? 'navbar--compact' : ''}`}>
+    <nav className={`navbar ${isOpen ? 'open' : ''} ${isRsvp ? 'navbar--rsvp' : ''} ${isCompact ? 'navbar--compact' : ''}${introReady ? ' guidance-ready' : ''}`}>
         <div className='topbar'>
-             <div>
-                <button onClick={toggleMenu} className="menu-button">
+             <div className="menu-trigger-wrap">
+                <button
+                  onClick={toggleMenu}
+                  className="menu-button"
+                  aria-expanded={isOpen}
+                  aria-controls="main-navigation"
+                  aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
+                >
                 {!isOpen ? (
                     <svg id="menu" version="1.1" x="0px" y="0px" width="100%" viewBox="0 0 1080 1080" enableBackground="new 0 0 1080 1080" >
                         <path fill={isOpen || isHomePage || isOurStory ? '#8a0a3d' : isRsvp ? '#d4507a' : '#FBF8F5'}
@@ -50,12 +56,12 @@ opacity="1.000000" stroke="none" d=" M261.250000,842.250000   C217.302185,886.19
                 </button>
              </div>
         </div>
-        <ul className={`menu ${isOpen ? 'open' : ''}`}>
-          <li><Link to="/" onClick={toggleMenu}>{labels.home}</Link></li>
-          <li><Link to="/ourstory" onClick={toggleMenu}>{labels.ourstory}</Link></li>
-          <li><Link to="/gifts" onClick={toggleMenu}>{labels.gifts}</Link></li>
-          <li><Link to="/rsvp" onClick={toggleMenu}>{labels.rsvp}</Link></li>
-          <li><Link to="https://maps.app.goo.gl/55dh8DAiu1dQKvf4A" target="_blank" rel="noopener noreferrer" onClick={toggleMenu}>{labels.location}</Link></li>
+        <ul id="main-navigation" className={`menu ${isOpen ? 'open' : ''}`}>
+          <li style={{ '--menu-stagger': '0' }}><Link to="/" onClick={toggleMenu}>{labels.home}</Link></li>
+          <li style={{ '--menu-stagger': '1' }}><Link to="/ourstory" onClick={toggleMenu}>{labels.ourstory}</Link></li>
+          <li style={{ '--menu-stagger': '2' }}><Link to="/gifts" onClick={toggleMenu}>{labels.gifts}</Link></li>
+          <li style={{ '--menu-stagger': '3' }}><Link to="/rsvp" onClick={toggleMenu}>{labels.rsvp}</Link></li>
+          <li style={{ '--menu-stagger': '4' }}><Link to="https://maps.app.goo.gl/55dh8DAiu1dQKvf4A" target="_blank" rel="noopener noreferrer" onClick={toggleMenu}>{labels.location}</Link></li>
         </ul>
     </nav>
   );
