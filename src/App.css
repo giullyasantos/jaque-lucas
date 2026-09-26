@@ -43,8 +43,7 @@ html {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden;
-  overscroll-behavior: none;
+  overflow-x: clip;
   scroll-behavior: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -52,8 +51,7 @@ html {
 
 body {
   margin: 0;
-  overflow-x: hidden;
-  overscroll-behavior: none;
+  overflow-x: clip;
 }
 
 #root {
@@ -268,6 +266,8 @@ p {
   background-color: var(--cream);
   z-index: 9999;
   overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: none;
 }
 
 .ld-screen--exit {

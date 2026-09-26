@@ -14,6 +14,8 @@ const POLAROIDS = [
   { src: ring, rotate:  '9deg'  },
 ];
 
+export const INTRO_IMAGES = [logo, ...POLAROIDS.map(({ src }) => src)];
+
 //  ── Timeline (all ms) ──────────────────────────────────────
 const MIN_LOGO_MS    = 1600;
 const LOGO_OUT_DUR   = 800;
@@ -49,16 +51,6 @@ const Loading = ({ onDone, assetsReady = false, progress = 0, variant = 'route' 
   const [minLogoDone, setMinLogoDone] = useState(false);
   const [presentationProgress, setPresentationProgress] = useState(0);
   const isIntro = variant === 'intro';
-
-  // Lock body scroll while the loading screen is visible
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setMinLogoDone(true), MIN_LOGO_MS);

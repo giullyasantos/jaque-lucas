@@ -17,23 +17,14 @@ import RSVP from './pages/rsvp';
 import NavBar from './components/navbar';
 import Footer from './components/footer';
 import { LanguageProvider } from './components/languageContext';
-import Loading from './components/loader';
+import Loading, { INTRO_IMAGES } from './components/loader';
 
 // -- Media --
 import coupleDesktop from './media/HomeDesktop.png';
 import coupleMobile from './media/HomeDesktop.png';
 import giftsMobile from './media/giftsMobile.webp';
 
-const designAssetContext = require.context('./media/content/design-assets', false, /\.(png|jpe?g|webp)$/);
-const photoContext = require.context('./media/content/photos', true, /\.(png|jpe?g|webp)$/);
-
-const siteImages = [
-  coupleDesktop,
-  coupleMobile,
-  giftsMobile,
-  ...designAssetContext.keys().map(designAssetContext),
-  ...photoContext.keys().map(photoContext),
-];
+const IMAGE_PRELOAD_TIMEOUT_MS = 10000;
 
 // Helper function for preloading images
 const preloadImages = (images, onProgress) => {
@@ -48,11 +39,20 @@ const preloadImages = (images, onProgress) => {
   const promises = uniqueImages.map(
     (src) =>
       new Promise((resolve) => {
+        const img = new Image();
+        let settled = false;
+
         const finish = () => {
+          if (settled) return;
+          settled = true;
+          window.clearTimeout(timeout);
+          img.onload = null;
+          img.onerror = null;
           reportProgress();
           resolve();
         };
-        const img = new Image();
+        const timeout = window.setTimeout(finish, IMAGE_PRELOAD_TIMEOUT_MS);
+
         img.decoding = 'async';
         img.loading = 'eager';
         img.onload = () => {
@@ -188,23 +188,19 @@ function Main({ introReady = true }) {
 
 function AppContent() {
   const location = useLocation();
-  const isGiftsPage = location.pathname === '/gifts';
-  const [loaderAnimationDone, setLoaderAnimationDone] = useState(() => isGiftsPage);
-  const [assetsReady, setAssetsReady] = useState(() => isGiftsPage);
-  const [assetProgress, setAssetProgress] = useState(() => (isGiftsPage ? 1 : 0));
-  const showLoader = !isGiftsPage && (!loaderAnimationDone || !assetsReady);
+  // Preserve the existing direct /gifts behavior, but never let a later route
+  // change restart the one-time introduction.
+  const [skipIntro] = useState(() => location.pathname === '/gifts');
+  const [loaderAnimationDone, setLoaderAnimationDone] = useState(skipIntro);
+  const [assetsReady, setAssetsReady] = useState(skipIntro);
+  const [assetProgress, setAssetProgress] = useState(() => (skipIntro ? 1 : 0));
+  const showLoader = !skipIntro && (!loaderAnimationDone || !assetsReady);
 
   useEffect(() => {
-    if (isGiftsPage) {
-      setAssetsReady(true);
-      setAssetProgress(1);
-      return;
-    }
+    if (skipIntro) return undefined;
 
     let cancelled = false;
-    setAssetsReady(false);
-    setAssetProgress(0);
-    preloadImages(siteImages, (loaded, total) => {
+    preloadImages(INTRO_IMAGES, (loaded, total) => {
       if (!cancelled) setAssetProgress(total ? loaded / total : 1);
     }).then(() => {
       if (!cancelled) setAssetsReady(true);
@@ -213,16 +209,16 @@ function AppContent() {
     return () => {
       cancelled = true;
     };
-  }, [isGiftsPage]);
+  }, [skipIntro]);
 
   return (
     <>
       <ScrollToTop />
       {/* Main is always mounted so the background is already painted when loader dissolves */}
       <LanguageProvider>
-        <Main introReady={!showLoader || isGiftsPage} />
+        <Main introReady={!showLoader} />
       </LanguageProvider>
-      {!isGiftsPage && showLoader && (
+      {showLoader && (
         <Loading
           variant="intro"
           assetsReady={assetsReady}
